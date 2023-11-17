@@ -7,7 +7,7 @@ def auctionAlgorithm(setA, setB):
     while True:
         bids = calculateBids(setA, setB, prices)
         maxBidIndices = findMaxBidIndices(bids)
-        newAssignment = [[0] * n for _ in range(m)]
+        newAssignment = [[0 for i in range(n)] for j in range(m)]
         for i in range(m):
             newAssignment[i][maxBidIndices[i]] = 1
         if assignment == newAssignment:
