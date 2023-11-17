@@ -16,7 +16,7 @@ def auctionAlgorithm(setA, setB):
         prices = updatePrices(prices, maxBidIndices, bids)
     totalDistance = calculateTotalDistance(setA, assignment, setB)
     return assignment, totalDistance
-
+#calculate bids
 def calculateBids(setA, setB, prices):
     m = len(setA)
     n = len(setB)
