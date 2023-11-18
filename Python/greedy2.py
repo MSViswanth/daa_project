@@ -1,6 +1,4 @@
-import copy
 from avl_tree import AVLTree
-import math
 import time
 import common
 
