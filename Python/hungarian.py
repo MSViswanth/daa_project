@@ -28,7 +28,7 @@ class hungarian:
 start_time = time.time()
 cost_matrix = hungarian.cost_matrix(setA, setB)
 mimimum_distance, matching_pairs = hungarian.hungarian(cost_matrix)
-print("minimum distance:", mimimum_distance)
+print("Total Minimum distance:", mimimum_distance)
 print("Matching pairs:", matching_pairs)
 execution_time = time.time() - start_time
 print("Execution time is " + str(execution_time) + " seconds" )

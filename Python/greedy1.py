@@ -31,6 +31,6 @@ start_time = time.time()
 n, cost_matrix = common.preprocess.cost_matrix(setA,setB)
 sorted_cost_array = common.preprocess.sorted_array(n, cost_matrix)
 minumum_distance = greedy1.greedy1(n, sorted_cost_array)
-print("minimum distance :" +str(minumum_distance))
+print("Total Minimum distance:" +str(minumum_distance))
 execution_time = time.time() - start_time
 print("Execution time is " + str(execution_time) + " seconds" )
