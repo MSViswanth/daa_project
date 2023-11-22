@@ -4,15 +4,28 @@ from avl_tree import AVLTree
 import math
 
 
-cost_matrix_original = [
-    [19.1, 17.6, 24.7, 19.3, 18.7],
-    [7.0, 7.3, 1.0, 8.3, 5.3],
-    [17.2, 13.2, 9.9, 18.6, 13],
-    [6.6, 4.6, 3.7, 9.1, 2.7],
-    [23.6, 15.4, 19.8, 25.1, 17.3]
-]
+# cost_matrix_original = [
+#     [19.1, 17.6, 24.7, 19.3, 18.7],
+#     [7.0, 7.3, 1.0, 8.3, 5.3],
+#     [17.2, 13.2, 9.9, 18.6, 13],
+#     [6.6, 4.6, 3.7, 9.1, 2.7],
+#     [23.6, 15.4, 19.8, 25.1, 17.3]
+# ]
+
+setA = [(3,2),(4,1),(8,5)]
+setB = [(1,2),(3,6),(1,5)]
+
+cost_matrix_original=[[0 for i in range(len(setA))] for j in range(len(setB))]
+# print(cost_matrix_original)
+for i in range(len(setA)):
+    for j in range(len(setB)):
+        # print(math.dist(setA[i],setB[j]))
+        cost_matrix_original[i][j] = math.dist(setA[i],setB[j])
+        # print(cost_matrix_original[i][j])
+# print(cost_matrix_original)
 
 
+# Set the value of n.
 n = len(cost_matrix_original)
 
 # Create assignment matrix
@@ -84,6 +97,9 @@ def neighborly(cost_array,sumofDistances):
     assignmentX = delta[0][0]
     assignmentY = cost_array[0][2]
     print("Assignment:" + str((assignmentX, assignmentY)))
+    print(str(setA[assignmentX]) + " --> " + str(setB[assignmentY]))
+    setA.pop(assignmentX)
+    setB.pop(assignmentY)
     new_cost_array = []
     for element in cost_array:
         if element[1] != assignmentX and element[2] != assignmentY:
