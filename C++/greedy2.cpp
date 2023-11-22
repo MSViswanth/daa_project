@@ -107,7 +107,7 @@ int main() {
         std::cout << "(" << pair.first << ", " << pair.second << ")" << std::endl;
     }
     auto duration = duration_cast<microseconds>(stop - start);
-    cout << "Time taken by Hungarian Algorithmm: "
+    cout << "Time taken by Greedy2 Algorithmm: "
          << duration.count() << " microseconds" << endl;
     return 0;
 }
