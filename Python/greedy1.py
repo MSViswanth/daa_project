@@ -1,7 +1,14 @@
+import numpy as np
 import copy
 import time
 import common
 
+
+N = 5000
+# setA = [(3,2),(4,1),(8,5)]
+# setB = [(1,2),(3,6),(1,5)]
+setA = np.random.uniform(0, 10, (N, 2))
+setB = np.random.uniform(0, 10, (N, 2))
 
 setA = [(3,2),(4,1),(8,5)]
 setB = [(1,2),(3,6),(1,5)]
