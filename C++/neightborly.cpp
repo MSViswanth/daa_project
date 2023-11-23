@@ -2,7 +2,12 @@
 #include <tuple>
 #include <iostream>
 #include <algorithm>
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <chrono>
 using namespace std;
+using namespace std::chrono;
 
 // Comparator that compares tuples based on the specified index
 template <size_t Index>
@@ -140,7 +145,7 @@ int main()
     vector<pair<double, double>> setB = {{1.0, 2.0}, {3.0, 6.0}, {1.0, 5.0}};
     int len_A = setA.size();
     int len_B = setB.size();
-
+    auto start = high_resolution_clock::now();
     // Create a cost matrix
     vector<vector<double>> costMatrixOriginal(len_A, vector<double>(len_B, 0.0));
     for (int i = 0; i < len_A; ++i)
@@ -164,6 +169,9 @@ int main()
 
     sort_by_index<0>(costPosArray);
     neighborly(costPosArray, setA, setB, 0);
-
+    auto stop = high_resolution_clock::now();
     return 0;
+    auto duration = duration_cast<microseconds>(stop - start);
+    cout << "Time taken by Hungarian Algorithmm: "
+         << duration.count() << " microseconds" << endl;
 }
