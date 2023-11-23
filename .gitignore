@@ -7,3 +7,8 @@ __pycache__/
 *.dSYM
 .vscode
 .vs
+**/*.exe
+**/*.pdb
+**/*.obj
+**/*.out
+**/*.ilk
