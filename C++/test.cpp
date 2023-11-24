@@ -31,12 +31,8 @@ struct TupleComparator
 template <size_t Index, typename T>
 void sort_by_index(vector<T> &vecOfTuples, bool desc = false)
 {
-    auto start = steady_clock::now();
+
     sort(vecOfTuples.begin(), vecOfTuples.end(), TupleComparator<Index>(desc));
-    auto stop = steady_clock::now();
-    auto duration = duration_cast<microseconds>(stop - start);
-    cout << "Time taken by Sort By Index Function: "
-         << duration.count() << " microseconds" << endl;
 };
 
 vector<int> get_row_tracks(const vector<tuple<double, double, double>> &matrix)
@@ -91,9 +87,9 @@ void neighborly(vector<tuple<double, double, double>> &costPosArray, vector<pair
 
     number++;
 
-    cout << "Assignment: (" << setA[assignmentX].first << ", " << setA[assignmentX].second << ")"
-         << " --> "
-         << "(" << setB[assignmentY].first << ", " << setB[assignmentY].second << ")" << endl;
+    // cout << "Assignment: (" << setA[assignmentX].first << ", " << setA[assignmentX].second << ")"
+        //  << " --> "
+        //  << "(" << setB[assignmentY].first << ", " << setB[assignmentY].second << ")" << endl;
 
     setA.erase(setA.begin() + assignmentX);
     setB.erase(setB.begin() + assignmentY);
@@ -108,7 +104,7 @@ void neighborly(vector<tuple<double, double, double>> &costPosArray, vector<pair
         }
         if (get<1>(element) == assignmentX && get<2>(element) == assignmentY)
         {
-            cout << "Cost: " << get<0>(element) << endl;
+            // cout << "Cost: " << get<0>(element) << endl;
             sumofDistances += get<0>(element);
         }
     }
@@ -126,7 +122,7 @@ void neighborly(vector<tuple<double, double, double>> &costPosArray, vector<pair
         }
     }
 
-    cout << "Sum of distances till " << number << " assignments: " << sumofDistances << endl;
+    // cout << "Sum of distances till " << number << " assignments: " << sumofDistances << endl;
 
     if (newCostPosArray.size() != 0)
     {
@@ -158,8 +154,11 @@ int main()
     }
 
     sort_by_index<0>(costPosArray);
-
+    auto start = steady_clock::now();
     neighborly(costPosArray, setA, setB, 0);
-
+    auto stop = steady_clock::now();
+    auto duration = duration_cast<microseconds>(stop - start);
+    cout << "Time taken by NeighborlyRecursion: "
+         << duration.count() << " microseconds" << endl;
     return 0;
 }
