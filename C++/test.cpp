@@ -49,7 +49,10 @@ vector<int> get_row_tracks(const vector<tuple<double, double, double>> &matrix)
     return result;
 };
 int number = 0;
-void neighborly(vector<tuple<double, double, double>> &costPosArray, vector<pair<double, double>> setA, vector<pair<double, double>> setB, double sumofDistances = 0)
+double sumofDistances = 0;
+vector<pair<double, double>> setX(0);
+vector<pair<double, double>> setY(0);
+void neighborly(vector<tuple<double, double, double>> &costPosArray, vector<pair<double, double>> setA, vector<pair<double, double>> setB)
 {
 
     vector<tuple<double, double, double>> rowSortedCostPosArray = costPosArray;
@@ -88,8 +91,8 @@ void neighborly(vector<tuple<double, double, double>> &costPosArray, vector<pair
     number++;
 
     // cout << "Assignment: (" << setA[assignmentX].first << ", " << setA[assignmentX].second << ")"
-        //  << " --> "
-        //  << "(" << setB[assignmentY].first << ", " << setB[assignmentY].second << ")" << endl;
+    //  << " --> "
+    //  << "(" << setB[assignmentY].first << ", " << setB[assignmentY].second << ")" << endl;
 
     setA.erase(setA.begin() + assignmentX);
     setB.erase(setB.begin() + assignmentY);
@@ -127,7 +130,7 @@ void neighborly(vector<tuple<double, double, double>> &costPosArray, vector<pair
     if (newCostPosArray.size() != 0)
     {
 
-        neighborly(newCostPosArray, setA, setB, sumofDistances);
+        neighborly(newCostPosArray, setA, setB);
     }
 };
 
@@ -141,7 +144,7 @@ int main()
 
     // Create a cost matrix
     vector<vector<double>> costMatrixOriginal(len_A, vector<double>(len_B, 0.0));
-
+    auto start = steady_clock::now();
     // Cost and Position Array
     vector<tuple<double, double, double>> costPosArray(0);
     for (int i = 0; i < len_A; ++i)
@@ -154,11 +157,12 @@ int main()
     }
 
     sort_by_index<0>(costPosArray);
-    auto start = steady_clock::now();
-    neighborly(costPosArray, setA, setB, 0);
+
+    neighborly(costPosArray, setA, setB);
     auto stop = steady_clock::now();
     auto duration = duration_cast<microseconds>(stop - start);
     cout << "Time taken by NeighborlyRecursion: "
          << duration.count() << " microseconds" << endl;
+    cout << "Sum of distances: " << sumofDistances << endl;
     return 0;
 }
