@@ -89,7 +89,8 @@ void neighborly(vector<tuple<double, double, double>> &costPosArray, vector<pair
     int assignmentY = get<2>(costPosArray[0]);
 
     number++;
-
+    setX.push_back(setA[assignmentX]);
+    setY.push_back(setB[assignmentY]);
     // cout << "Assignment: (" << setA[assignmentX].first << ", " << setA[assignmentX].second << ")"
     //  << " --> "
     //  << "(" << setB[assignmentY].first << ", " << setB[assignmentY].second << ")" << endl;
@@ -164,5 +165,8 @@ int main()
     cout << "Time taken by NeighborlyRecursion: "
          << duration.count() << " microseconds" << endl;
     cout << "Sum of distances: " << sumofDistances << endl;
+    for (int i = 0; i < setX.size(); ++i){
+        cout<<"("<<setX[i].first<<", "<<setX[i].second<<") --> "<<"("<<setY[i].first<<", "<<setY[i].second<<")"<<endl;
+    }
     return 0;
 }
