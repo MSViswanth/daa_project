@@ -442,12 +442,7 @@ execution_time = time.time() - start_time
 print("Execution time for cost_matrix calculation is " + str(execution_time) + " seconds" )
 start_time = time.time()
 hungarian = Hungarian(cost_matrix)
-print('calculating...')
 hungarian.calculate()
-print("Expected value:\t\t12")
-print("Calculated value:\t", hungarian.get_total_potential())  # = 12
-# print("Expected results:\n\t[(0, 1), (1, 0), (2, 2)]")
-#print("Results:\n\t", hungarian.get_results())
-print("-" * 80)
+print("Total minimum distance:\t", hungarian.get_total_potential())
 execution_time = time.time() - start_time
 print("Execution time for minimum distance calculation is " + str(execution_time) + " seconds" )
