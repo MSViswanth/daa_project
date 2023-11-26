@@ -205,22 +205,27 @@ void neighborly(vector<tuple<double, double, double>> &costPosArray, vector<pair
     }
 };
 
-std::vector<std::pair<double, double>> readCSV(const std::string& filename) {
+std::vector<std::pair<double, double>> readCSV(const std::string &filename)
+{
     std::ifstream file(filename);
     std::vector<std::pair<double, double>> points;
 
-    if (file.is_open()) {
+    if (file.is_open())
+    {
         std::string line;
-        while (std::getline(file, line)) {
+        while (std::getline(file, line))
+        {
             std::stringstream linestream(line);
             std::string value;
             std::vector<double> row;
 
-            while (std::getline(linestream, value, ',')) {
+            while (std::getline(linestream, value, ','))
+            {
                 row.push_back(std::stod(value));
             }
 
-            if (row.size() == 2) {
+            if (row.size() == 2)
+            {
                 points.emplace_back(row[0], row[1]);
             }
         }
@@ -235,8 +240,8 @@ int main()
     // Given sets
     // vector<pair<double, double>> setA = {{3.0, 2.0}, {4.0, 1.0}, {8.0, 5.0}};
     // vector<pair<double, double>> setB = {{1.0, 2.0}, {3.0, 6.0}, {1.0, 5.0}};
-    std::string setAfilename = "/Users/guna/Education/Masters/2ndSemester/COT6405_DAA/daa_project/Dataset/setA_1000.csv/Dataset/setA.csv"; 
-    std::string setBfilename = "/Users/guna/Education/Masters/2ndSemester/COT6405_DAA/daa_project/Dataset/setB_1000.csv/Dataset/setB.csv";
+    std::string setAfilename = "/Users/guna/Education/Masters/2ndSemester/COT6405_DAA/daa_project/Dataset/setA_1000.csv";
+    std::string setBfilename = "/Users/guna/Education/Masters/2ndSemester/COT6405_DAA/daa_project/Dataset/setB_1000.csv";
     std::vector<std::pair<double, double>> setA = readCSV(setAfilename);
     std::vector<std::pair<double, double>> setB = readCSV(setBfilename);
     int len_A = setA.size();
@@ -244,15 +249,15 @@ int main()
 
     /**
      * @brief Stores the cost matrix between all the elements in `setA` and `setB`.
-    */
+     */
     vector<vector<double>> costMatrix(len_A, vector<double>(len_B, 0.0));
     auto start = steady_clock::now();
-    
+
     /**
      * @brief Stores vector of tuples. Each tuple is `(costMatrix[x][y], x, y)` where `costMatrix[x][y]` is the value at `x` and `y` indices in `costMatrix` matrix.
-    */
+     */
     vector<tuple<double, double, double>> costPosArray(0);
-    
+
     // Generating `costMatrix` and `costPosArray`.
     for (int i = 0; i < len_A; ++i)
     {
