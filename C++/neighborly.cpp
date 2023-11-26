@@ -208,8 +208,12 @@ void neighborly(vector<tuple<double, double, double>> &costPosArray, vector<pair
 int main()
 {
     // Given sets
-    vector<pair<double, double>> setA = {{3.0, 2.0}, {4.0, 1.0}, {8.0, 5.0}};
-    vector<pair<double, double>> setB = {{1.0, 2.0}, {3.0, 6.0}, {1.0, 5.0}};
+    // vector<pair<double, double>> setA = {{3.0, 2.0}, {4.0, 1.0}, {8.0, 5.0}};
+    // vector<pair<double, double>> setB = {{1.0, 2.0}, {3.0, 6.0}, {1.0, 5.0}};
+    std::string setAfilename = "/Dataset/setA.csv"; 
+    std::string setBfilename = "/Dataset/setB.csv";
+    std::vector<std::pair<double, double>> setA = readCSV(setAfilename);
+    std::vector<std::pair<double, double>> setB = readCSV(setBfilename);
     int len_A = setA.size();
     int len_B = setB.size();
 
