@@ -104,7 +104,7 @@ int main() {
     std::cout << "Minimum Distance: " << result.first << std::endl;
     std::cout << "Matching pairs:" << std::endl;
     for (const auto& pair : result.second) {
-        std::cout << "(" << pair.first << ", " << pair.second << ")" << std::endl;
+        std::cout << "(" << setA[pair.first].first << ", " << setA[pair.first].second << ") --> " <<"(" << setB[pair.second].first << ", " << setB[pair.second].second << ")"<< std::endl;
     }
     auto duration = duration_cast<microseconds>(stop - start);
     cout << "Time taken by Greedy2 Algorithmm: "
