@@ -68,8 +68,11 @@ void coverZeros(std::vector<std::vector<double>>& costMatrix,
     const int INF = std::numeric_limits<int>::max() / 2;
     const size_t n = costMatrix.size();
     const size_t m = costMatrix[0].size();
-    std::vector<bool> rowCovered(costMatrix.size(), false);
-    std::vector<bool> colCovered(costMatrix.size(), false);
+    std::vector<bool> rowCovered1(costMatrix.size(), false);
+    std::vector<bool> colCovered1(costMatrix.size(), false);
+
+    rowCovered = rowCovered1;
+    colCovered = colCovered1;
     bool optimalSolutionFound = false;
 
 
