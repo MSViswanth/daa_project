@@ -49,7 +49,7 @@ void neighborly(vector<vector<tuple<double, int>>> &costColArray)
 int main()
 {
 
-    vector<vector<tuple<double, int>>> costColArray(n, vector<tuple<double, int>>(n));
+    vector<vector<tuple<double, int>>> costColArray(n, vector<tuple<double, int>>(n, make_tuple(0.0, 0)));
 
     auto start = steady_clock::now();
     {
