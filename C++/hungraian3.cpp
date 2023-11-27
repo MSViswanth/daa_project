@@ -79,47 +79,76 @@ void coverZeros(std::vector<std::vector<double>> &costMatrix,
                 std::vector<bool> &colCovered)
 {
     const int INF = std::numeric_limits<int>::max() / 2;
+    // number of rows
     const size_t n = costMatrix.size();
+
+    // number of columns
     const size_t m = costMatrix[0].size();
-    std::vector<bool> rowCovered1(costMatrix.size(), false);
-    std::vector<bool> colCovered1(costMatrix.size(), false);
+    std::vector<bool> rowMarked(costMatrix.size(), false);
+    std::vector<bool> colMarked(costMatrix.size(), false);
+    std::vector<std::vector<int>> starredZeroInRow(n, std::vector<int>(2, -1));
+    std::vector<std::vector<int>> starredZeroInCol(m, std::vector<int>(2, -1));
+    std::vector<std::vector<int>> starAndPrime(n, std::vector<int>(m, -1));
 
-    rowCovered = rowCovered1;
-    colCovered = colCovered1;
+    // rowCovered = rowCovered1;
+    // colCovered = colCovered1;
     bool optimalSolutionFound = false;
+    int coveredZeroes = 0;
 
-    std::vector<int> minRow(n, INF), minCol(m, INF);
+    // initialize two integer array, with infinity values in them.
+    std::vector<double> minRow(n, INF), minCol(m, INF);
     while (!optimalSolutionFound)
     {
 
-        // Step 1: Find the minimum value in each row and column
-        for (size_t i = 0; i < n; ++i)
+        for (int i = 0; i < n; ++i)
         {
-            for (size_t j = 0; j < m; ++j)
+            for (int j = 0; j < m; ++j)
             {
-                minRow[i] = std::min(minRow[i], static_cast<int>(costMatrix[i][j]));
-                minCol[j] = std::min(minCol[j], static_cast<int>(costMatrix[i][j]));
-            }
-        }
-
-        // Step 2: Cover rows and columns with minimum zeros
-        for (size_t i = 0; i < n; ++i)
-        {
-            for (size_t j = 0; j < m; ++j)
-            {
-                if (costMatrix[i][j] == minRow[i] || costMatrix[i][j] == minCol[j])
+                if (costMatrix[i][j] == 0 && !rowCovered[i] && !colCovered[j])
                 {
+                    starAndPrime[i][j] = 0;
                     rowCovered[i] = true;
+                    colMarked[j] = true;
                     colCovered[j] = true;
+                    //stored location of starred zero of a row
+                    starredZeroInRow[i] = {i,j};
+                    starredZeroInCol[j] = {i,j};
                 }
             }
         }
-        if (rowCovered.size() == costMatrix.size() && colCovered.size() == costMatrix.size())
+        
+        for (int i = 0; i < n; ++i)
+        {
+            for (int j = 0; j < m; ++j)
+            {
+                if (starAndPrime[i][j] == -1 && costMatrix[i][j] == 0)
+                {
+                    starAndPrime[i][j] = 1;
+                    if(starredZeroInRow[i][0] == i){
+                        rowMarked[i] = true;
+                        colMarked[starredZeroInRow[i][1]] = false;
+                    }
+                    else{
+                        if(starredZeroInCol[j][1]==j){
+                            for(int k = 0; k< m; ++k){
+                                if(starAndPrime[starredZeroInCol[j][0]][k] ==1){
+                                    //substep 2 is done;
+                                }
+                            }
+                        }
+                    }
+                    
+                    
+                }
+            }
+        }
+        if (n == costMatrix.size() && n == costMatrix.size()) // Change this
         {
             optimalSolutionFound = true;
         }
         else
         {
+            std::cout << "Else condition has run" << std::endl;
             // void adjustMatrix(std::vector<std::vector<double>>& costMatrix,
             //           const std::vector<bool>& rowCovered,
             //           const std::vector<bool>& colCovered) {
@@ -170,6 +199,11 @@ std::vector<int> assignJobs(std::vector<std::vector<double>> &costMatrix,
     const size_t n = costMatrix.size();
     const size_t m = costMatrix[0].size();
     std::vector<int> assignment(costMatrix.size(), -1);
+    std::vector<bool> rowCovered1(costMatrix.size(), false);
+    std::vector<bool> colCovered1(costMatrix.size(), false);
+
+    rowCovered = rowCovered1;
+    colCovered = colCovered1;
 
     while (true)
     {
@@ -218,20 +252,52 @@ std::vector<int> assignJobs(std::vector<std::vector<double>> &costMatrix,
     return assignment;
 }
 
+void print2DArray(std::vector<std::vector<double>> costMatrix)
+{
+    for (int i = 0; i < costMatrix.size(); ++i)
+    {
+        for (int j = 0; j < costMatrix[i].size(); ++j)
+        {
+            std::cout << costMatrix[i][j] << " | ";
+        }
+        std::cout << "\n";
+    }
+    std::cout << "\n"
+              << std::endl;
+}
+
 int main()
 {
     // Example input for setA and setB
-    std::vector<std::pair<double, double>> setA = {{3.0, 2.0}, {4.0, 1.0}, {8.0, 5.0}};
-    std::vector<std::pair<double, double>> setB = {{1.0, 2.0}, {3.0, 6.0}, {1.0, 5.0}};
+    // std::vector<std::pair<double, double>> setA = {{3.0, 2.0}, {4.0, 1.0}, {8.0, 5.0}};
+    // std::vector<std::pair<double, double>> setB = {{1.0, 2.0}, {3.0, 6.0}, {1.0, 5.0}};
 
     // Step 1: Generate cost matrix
-    std::vector<std::vector<double>> costMatrix = generateCostMatrix(setA, setB);
+    // std::vector<std::vector<double>> costMatrix = generateCostMatrix(setA, setB);
+
+    // std::vector<std::vector<double>> costMatrix = {
+    //     {19.1, 17.6, 24.7, 19.3, 18.7},
+    //     {7.0, 7.3, 1.0, 8.3, 5.3},
+    //     {17.2, 13.2, 9.9, 18.6, 13},
+    //     {6.6, 4.6, 3.7, 9.1, 2.7},
+    //     {23.6, 15.4, 19.8, 25.1, 17.3}};
+    // https://brilliant.org/wiki/hungarian-matching/
+    // std::vector<std::vector<double>> costMatrix = {
+    //     {108, 125, 150},
+    //     {150, 135, 175},
+    //     {122, 148, 250},
+    // };
+    std::vector<std::vector<double>> costMatrix = {
+        {0, 108, 0, 150},
+        {150, 0, 135, 0},
+        {0, 122, 148, 250},
+        {0, 4, 5, 6}};
 
     // Step 2: Row reduction
-    rowReduction(costMatrix);
+    // rowReduction(costMatrix);
 
     // Step 3: Column reduction
-    columnReduction(costMatrix);
+    // columnReduction(costMatrix);
 
     // Initializing row and column coverage vectors
     std::vector<bool> rowCovered(costMatrix.size(), false);

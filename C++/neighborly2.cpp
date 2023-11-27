@@ -26,30 +26,87 @@ vector<vector<double>> costMatrixOriginal = {{19.1, 17.6, 24.7, 19.3, 18.7},
                                              {23.6, 15.4, 19.8, 25.1, 17.3}};
 int n = costMatrixOriginal.size();
 
-void neighborly(vector<vector<tuple<double, int>>> &costColArray)
+/**
+ * @struct TupleComparator
+ * @brief This is given as one of the inputs for `sort_by_index` function and it helps to modify how sorting happens.
+ */
+template <size_t Index>
+struct TupleComparator
 {
-    for (int i = 0; i < n; ++i)
+    bool reverse;
+    TupleComparator(bool i) : reverse(i) {}
+    template <typename Tuple>
+    bool operator()(const Tuple &tuple1, const Tuple &tuple2) const
     {
-        for (int j = 0; j < n; ++j)
+        if (reverse)
         {
-            costColArray[i][j] = make_tuple(costMatrixOriginal[i][j], j);
+            return get<Index>(tuple1) > get<Index>(tuple2);
+        }
+        else
+        {
+            return get<Index>(tuple1) < get<Index>(tuple2);
         }
     }
-    // for (int i = 0; i < costMatrixOriginal.size(); ++i)
-    // {
-    //     for (int j = 0; j < costMatrixOriginal[i].size(); ++j)
-    //     {
-    //         cout << get<0>(costColArray[i][j]) << ", "<< get<1>(costColArray[i][j])<< endl;
-    //     }
-    // }
-    
+};
+
+/**
+ *
+ * @brief Sorts the given vector of tuples by index of the tuple. Sorts in ascending order by default.
+ *
+ * @paragraph
+ *  The `TupleComparator<Index>` is used as the comparator in the sorting process, allowing you to sort the tuples based on the element at the specified `index (Index)`.
+ *  The `desc` parameter determines whether the sorting should be in descending order (`true`) or ascending order (`false`).
+ * @param vecOfTuples Vector of tuples. Each tuple is `(cost[x][y], x, y)` where `cost[x][y]` is the value at `x` and `y` indices in `cost` matrix.
+ * @param desc defaults to `false` for ascending order.
+ * @return Returns nothing. It modifies the input vector.
+ */
+template <size_t Index, typename T>
+void sort_by_index(vector<T> &vecOfTuples, bool desc = false)
+{
+
+    sort(vecOfTuples.begin(), vecOfTuples.end(), TupleComparator<Index>(desc));
+};
+
+void neighborly(vector<vector<pair<double, int>>> &costColArray)
+{
+    double minVal = INFINITY;
+    int minValRow = -1;
+    // vector<int> rowTrack(costColArray.size());
+
+    for (int i = 0; i < costColArray.size(); ++i)
+    {
+        sort(costColArray[i].begin(), costColArray[i].end());
+        double minValCurrent = minVal;
+        minVal = min(minVal, costColArray[i][0].first);
+        if (minVal < minValCurrent)
+        {
+            minValRow = i;
+        }
+    }
+    for (int i = 0; i < costColArray.size(); ++i)
+    {
+        if (costColArray[minValRow][0].second == costColArray[i][0].second)
+        {
+            cout<<"Finish the rest after";
+
+        }
+    }
+
     cout << "Neighborly Executed" << endl;
 };
 
 int main()
 {
 
-    vector<vector<tuple<double, int>>> costColArray(n, vector<tuple<double, int>>(n));
+    vector<vector<pair<double, int>>> costColArray(n, vector<pair<double, int>>(n, make_pair(0, 0)));
+    for (int i = 0; i < n; ++i)
+    {
+        for (int j = 0; j < n; ++j)
+        {
+            costColArray[i][j].first = costMatrixOriginal[i][j];
+            costColArray[i][j].second = j;
+        }
+    }
 
     auto start = steady_clock::now();
     {
