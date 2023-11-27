@@ -98,50 +98,14 @@ void coverZeros(std::vector<std::vector<double>> &costMatrix,
     // initialize two integer array, with infinity values in them.
     std::vector<double> minRow(n, INF), minCol(m, INF);
     while (!optimalSolutionFound)
-    {
-
-        for (int i = 0; i < n; ++i)
-        {
-            for (int j = 0; j < m; ++j)
-            {
-                if (costMatrix[i][j] == 0 && !rowCovered[i] && !colCovered[j])
-                {
-                    starAndPrime[i][j] = 0;
-                    rowCovered[i] = true;
-                    colMarked[j] = true;
-                    colCovered[j] = true;
-                    //stored location of starred zero of a row
-                    starredZeroInRow[i] = {i,j};
-                    starredZeroInCol[j] = {i,j};
-                }
+    {        
+        // Step 3 - Wikipedia
+        for(int i=0; i<n;++i){
+            for(int j =0; j<m;++j){
+                
             }
-        }
+        }        
         
-        for (int i = 0; i < n; ++i)
-        {
-            for (int j = 0; j < m; ++j)
-            {
-                if (starAndPrime[i][j] == -1 && costMatrix[i][j] == 0)
-                {
-                    starAndPrime[i][j] = 1;
-                    if(starredZeroInRow[i][0] == i){
-                        rowMarked[i] = true;
-                        colMarked[starredZeroInRow[i][1]] = false;
-                    }
-                    else{
-                        if(starredZeroInCol[j][1]==j){
-                            for(int k = 0; k< m; ++k){
-                                if(starAndPrime[starredZeroInCol[j][0]][k] ==1){
-                                    //substep 2 is done;
-                                }
-                            }
-                        }
-                    }
-                    
-                    
-                }
-            }
-        }
         if (n == costMatrix.size() && n == costMatrix.size()) // Change this
         {
             optimalSolutionFound = true;
