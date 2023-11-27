@@ -90,6 +90,8 @@ void coverZeros(std::vector<std::vector<double>> &costMatrix,
     std::vector<std::vector<int>> starredZeroInCol(m, std::vector<int>(2, -1));
     std::vector<std::vector<int>> primedZeroInRow(n, std::vector<int>(2, -1));
     std::vector<std::vector<int>> primedZeroInCol(m, std::vector<int>(2, -1));
+    std::vector<std::vector<int>> encounteredStarred(0);
+    std::vector<std::vector<int>> encounteredPrime(0);
 
     std::vector<std::vector<int>> starAndPrime(n, std::vector<int>(m, -1));
 
@@ -97,6 +99,18 @@ void coverZeros(std::vector<std::vector<double>> &costMatrix,
     // colCovered = colCovered1;
     bool optimalSolutionFound = false;
     int coveredZeroes = 0;
+    int totalZeroes = 0;
+
+    for (int i = 0; i < n; ++i)
+    {
+        for (int j = 0; j < m; ++j)
+        {
+            if (costMatrix[i][j] == 0)
+            {
+                totalZeroes++;
+            }
+        }
+    }
 
     // initialize two integer array, with infinity values in them.
     std::vector<double> minRow(n, INF), minCol(m, INF);
@@ -124,6 +138,7 @@ void coverZeros(std::vector<std::vector<double>> &costMatrix,
     // Step 4 - Wikipedia
     while (!optimalSolutionFound)
     {
+        // Cover Columns
         for (int i = 0; i < n; ++i)
         {
             for (int j = 0; j < m; ++j)
@@ -133,6 +148,21 @@ void coverZeros(std::vector<std::vector<double>> &costMatrix,
                     colCovered[j] = true;
                 }
             }
+        }
+        // Check if zeroes are covered.
+        for (int i = 0; i < n; ++i)
+        {
+            for (int j = 0; j < m; ++j)
+            {
+                if (costMatrix[i][j] == 0 && rowCovered[i] && colCovered[j])
+                {
+                    coveredZeroes++;
+                }
+            }
+        }
+        if (totalZeroes == coveredZeroes)
+        {
+            optimalSolutionFound = true;
         }
 
         // Find non-covered zero and prime it.
@@ -160,10 +190,12 @@ void coverZeros(std::vector<std::vector<double>> &costMatrix,
                                 // Substep 1
                                 if (starredZeroInCol[j][1] == j)
                                 {
+                                    encounteredStarred.push_back({starredZeroInCol[j][0], starredZeroInCol[j][1]});
                                     int rowOfStarredZero = starredZeroInCol[j][0];
                                     // Substep 2
                                     if (primedZeroInRow[rowOfStarredZero][0] != -1)
                                     {
+                                        encounteredPrime.push_back({primedZeroInRow[rowOfStarredZero][0], primedZeroInRow[rowOfStarredZero][1]});
                                         continue; // Loop again to execute Substep 1
                                     }
                                 }
@@ -172,59 +204,67 @@ void coverZeros(std::vector<std::vector<double>> &costMatrix,
                                     subStepSkip = true;
                                 }
                             }
-
+                            for (auto &encounteredStarredZero : encounteredStarred)
+                            {
+                                starAndPrime[encounteredStarredZero[0]][encounteredStarredZero[1]] = -1;
+                            }
+                            std::vector<std::vector<int>> dummyStarAndPrime(n, std::vector<int>(m, -1));
+                            starAndPrime = dummyStarAndPrime;
+                            for (auto &encounteredPrimeZero : encounteredPrime)
+                            {
+                                starAndPrime[encounteredPrimeZero[0]][encounteredPrimeZero[1]] = 0;
+                            }
+                            rowCovered.assign(n, false);
+                            colCovered.assign(m, false);
+                            continue;
                         }
                     }
-                    else
-                    {
-                        optimalSolutionFound = true; // Skip to Step 5
-                    }
                 }
             }
         }
 
-        if (n == costMatrix.size() && n == costMatrix.size()) // Change this
-        {
-            optimalSolutionFound = true;
-        }
-        else
-        {
-            std::cout << "Else condition has run" << std::endl;
-            // void adjustMatrix(std::vector<std::vector<double>>& costMatrix,
-            //           const std::vector<bool>& rowCovered,
-            //           const std::vector<bool>& colCovered) {
-            const size_t n = costMatrix.size();
-            const size_t m = costMatrix[0].size();
-            double minUncovered = std::numeric_limits<double>::max();
+        // if (n == costMatrix.size() && n == costMatrix.size()) // Change this
+        // {
+        //     optimalSolutionFound = true;
+        // }
+        // else
+        // {
+        //     std::cout << "Else condition has run" << std::endl;
+        //     // void adjustMatrix(std::vector<std::vector<double>>& costMatrix,
+        //     //           const std::vector<bool>& rowCovered,
+        //     //           const std::vector<bool>& colCovered) {
+        //     const size_t n = costMatrix.size();
+        //     const size_t m = costMatrix[0].size();
+        //     double minUncovered = std::numeric_limits<double>::max();
 
-            // Find the smallest entry not covered by any line
-            for (size_t i = 0; i < n; ++i)
-            {
-                for (size_t j = 0; j < m; ++j)
-                {
-                    if (!rowCovered[i] && !colCovered[j] && costMatrix[i][j] < minUncovered)
-                    {
-                        minUncovered = costMatrix[i][j];
-                    }
-                }
-            }
+        //     // Find the smallest entry not covered by any line
+        //     for (size_t i = 0; i < n; ++i)
+        //     {
+        //         for (size_t j = 0; j < m; ++j)
+        //         {
+        //             if (!rowCovered[i] && !colCovered[j] && costMatrix[i][j] < minUncovered)
+        //             {
+        //                 minUncovered = costMatrix[i][j];
+        //             }
+        //         }
+        //     }
 
-            // Subtract the smallest entry not covered by any line from the entire matrix
-            for (size_t i = 0; i < n; ++i)
-            {
-                for (size_t j = 0; j < m; ++j)
-                {
-                    if (!rowCovered[i] && !colCovered[j])
-                    {
-                        costMatrix[i][j] -= minUncovered;
-                    }
-                    else if (rowCovered[i] && colCovered[j] && costMatrix[i][j] == 0)
-                    {
-                        costMatrix[i][j] += minUncovered;
-                    }
-                }
-            }
-        }
+        //     // Subtract the smallest entry not covered by any line from the entire matrix
+        //     for (size_t i = 0; i < n; ++i)
+        //     {
+        //         for (size_t j = 0; j < m; ++j)
+        //         {
+        //             if (!rowCovered[i] && !colCovered[j])
+        //             {
+        //                 costMatrix[i][j] -= minUncovered;
+        //             }
+        //             else if (rowCovered[i] && colCovered[j] && costMatrix[i][j] == 0)
+        //             {
+        //                 costMatrix[i][j] += minUncovered;
+        //             }
+        //         }
+        //     }
+        // }
     }
 }
 // }
