@@ -84,10 +84,13 @@ void coverZeros(std::vector<std::vector<double>> &costMatrix,
 
     // number of columns
     const size_t m = costMatrix[0].size();
-    std::vector<bool> rowMarked(costMatrix.size(), false);
-    std::vector<bool> colMarked(costMatrix.size(), false);
+    // std::vector<bool> rowMarked(costMatrix.size(), false);
+    // std::vector<bool> colMarked(costMatrix.size(), false);
     std::vector<std::vector<int>> starredZeroInRow(n, std::vector<int>(2, -1));
     std::vector<std::vector<int>> starredZeroInCol(m, std::vector<int>(2, -1));
+    std::vector<std::vector<int>> primedZeroInRow(n, std::vector<int>(2, -1));
+    std::vector<std::vector<int>> primedZeroInCol(m, std::vector<int>(2, -1));
+
     std::vector<std::vector<int>> starAndPrime(n, std::vector<int>(m, -1));
 
     // rowCovered = rowCovered1;
@@ -107,15 +110,79 @@ void coverZeros(std::vector<std::vector<double>> &costMatrix,
             {
                 rowCovered[i] = true;
                 colCovered[i] = true;
-                starAndPrime[i][j] = 0;
+                starAndPrime[i][j] = 0;       // Starring Zero.
+                starredZeroInRow[i] = {i, j}; // Storing the location of starred zero for a row
+                starredZeroInCol[j] = {i, j}; // Storing the location of starred zero for a column
             }
         }
     }
+
+    // Uncover everything
+    rowCovered.assign(n, false);
+    colCovered.assign(m, false);
+
     // Step 4 - Wikipedia
     while (!optimalSolutionFound)
     {
-        
-        
+        for (int i = 0; i < n; ++i)
+        {
+            for (int j = 0; j < m; ++j)
+            {
+                if (starAndPrime[i][j] == 0)
+                {
+                    colCovered[j] = true;
+                }
+            }
+        }
+
+        // Find non-covered zero and prime it.
+        for (int i = 0; i < n; ++i)
+        {
+            for (int j = 0; j < m; ++j)
+            {
+                if (costMatrix[i][j] == 0)
+                {
+                    if (starAndPrime[i][j] == -1)
+                    {
+                        starAndPrime[i][j] = 1; // Priming Zero.
+                        primedZeroInRow[i] = {i, j};
+                        primedZeroInCol[j] = {i, j};
+                        if (i == starredZeroInRow[i][0])
+                        {
+                            rowCovered[i] = true;
+                            colCovered[starredZeroInRow[i][1]] = false;
+                        }
+                        else
+                        {
+                            bool subStepSkip = false;
+                            while (!subStepSkip)
+                            {
+                                // Substep 1
+                                if (starredZeroInCol[j][1] == j)
+                                {
+                                    int rowOfStarredZero = starredZeroInCol[j][0];
+                                    // Substep 2
+                                    if (primedZeroInRow[rowOfStarredZero][0] != -1)
+                                    {
+                                        continue; // Loop again to execute Substep 1
+                                    }
+                                }
+                                else
+                                {
+                                    subStepSkip = true;
+                                }
+                            }
+
+                        }
+                    }
+                    else
+                    {
+                        optimalSolutionFound = true; // Skip to Step 5
+                    }
+                }
+            }
+        }
+
         if (n == costMatrix.size() && n == costMatrix.size()) // Change this
         {
             optimalSolutionFound = true;
