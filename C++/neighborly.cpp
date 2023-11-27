@@ -100,7 +100,8 @@ vector<pair<double, double>> setY(0);
  */
 void neighborly(vector<tuple<double, double, double>> &costPosArray, vector<pair<double, double>> setA, vector<pair<double, double>> setB)
 {
-
+// Debug print
+// cout<<setA.size()<<endl;
     /**
      * @brief Stores a row sorted copy of `costPosArray`.
      */
@@ -123,29 +124,32 @@ void neighborly(vector<tuple<double, double, double>> &costPosArray, vector<pair
      */
     vector<int> competition(0);
 
+
     /**
      * @brief Stores a vector of tuples. Each tuple is `(row, delta)` where `row` is the row index of a possible assignment for a specific column, and `delta` is the difference between second and first least elements of the `row`.
      */
-    vector<tuple<int, double>> delta = {{get<1>(costPosArray[0]), 1.0}};
+    vector<vector<double>> delta = {{ 1.0,get<1>(costPosArray[0]),}};
     if (size > 1)
     {
-        delta = {{get<1>(costPosArray[0]), get<0>(rowSortedCostPosArray[(size * get<1>(costPosArray[0])) + 1]) - get<0>(rowSortedCostPosArray[(size * get<1>(costPosArray[0]))])}};
+        delta = {{ get<0>(rowSortedCostPosArray[(size * get<1>(costPosArray[0])) + 1]) - get<0>(rowSortedCostPosArray[(size * get<1>(costPosArray[0]))]),get<1>(costPosArray[0])}};
     }
     for (size_t i = 0; i < row_track.size(); ++i)
     {
         if (get<2>(costPosArray[0]) == row_track[i] && get<1>(costPosArray[0]) != i)
         {
             competition.push_back(i);
-            delta.push_back(make_tuple(i, get<0>(rowSortedCostPosArray[(size * i) + 1]) - get<0>(rowSortedCostPosArray[(size * i)])));
+            delta.push_back({ get<0>(rowSortedCostPosArray[(size * i) + 1]) - get<0>(rowSortedCostPosArray[(size * i)]),double(i)});
         }
     }
 
-    sort_by_index<1>(delta, true);
+    // sort_by_index<1>(delta, true);
+    sort(delta.begin(),delta.end());
+    int lastIndex = delta.size() - 1;
 
     /**
      * @brief Stores the row index of the chosen assignment.
      */
-    int assignmentX = get<0>(delta[0]);
+    int assignmentX = delta[lastIndex][1];
     /**
      * @brief Stores the column index of the chosen assignment.
      */
@@ -240,8 +244,8 @@ int main()
     // Given sets
     // vector<pair<double, double>> setA = {{3.0, 2.0}, {4.0, 1.0}, {8.0, 5.0}};
     // vector<pair<double, double>> setB = {{1.0, 2.0}, {3.0, 6.0}, {1.0, 5.0}};
-    std::string setAfilename = "/Users/guna/Education/Masters/2ndSemester/COT6405_DAA/daa_project/Dataset/setA_1000.csv";
-    std::string setBfilename = "/Users/guna/Education/Masters/2ndSemester/COT6405_DAA/daa_project/Dataset/setB_1000.csv";
+    std::string setAfilename = "..\\Dataset\\setA_1000.csv";
+    std::string setBfilename = "..\\Dataset\\setB_1000.csv";
     std::vector<std::pair<double, double>> setA = readCSV(setAfilename);
     std::vector<std::pair<double, double>> setB = readCSV(setBfilename);
     int len_A = setA.size();
