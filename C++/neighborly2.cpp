@@ -67,25 +67,44 @@ void sort_by_index(vector<T> &vecOfTuples, bool desc = false)
     sort(vecOfTuples.begin(), vecOfTuples.end(), TupleComparator<Index>(desc));
 };
 
-void neighborly(vector<vector<double>> &costColArray)
+void neighborly(vector<vector<pair<double, int>>> &costColArray)
 {
-   
-    for(int i = 0; i<costColArray[i].size(); ++i){
-        sort_by_index<0>(costColArray[i]);
+    double minVal = INFINITY;
+    int minValRow = -1;
+    // vector<int> rowTrack(costColArray.size());
+
+    for (int i = 0; i < costColArray.size(); ++i)
+    {
+        sort(costColArray[i].begin(), costColArray[i].end());
+        double minValCurrent = minVal;
+        minVal = min(minVal, costColArray[i][0].first);
+        if (minVal < minValCurrent)
+        {
+            minValRow = i;
+        }
     }
-    
+    for (int i = 0; i < costColArray.size(); ++i)
+    {
+        if (costColArray[minValRow][0].second == costColArray[i][0].second)
+        {
+            cout<<"Finish the rest after";
+
+        }
+    }
+
     cout << "Neighborly Executed" << endl;
 };
 
 int main()
 {
 
-    vector<vector<double>> costColArray(n, {0,0});
-     for (int i = 0; i < n; ++i)
+    vector<vector<pair<double, int>>> costColArray(n, vector<pair<double, int>>(n, make_pair(0, 0)));
+    for (int i = 0; i < n; ++i)
     {
         for (int j = 0; j < n; ++j)
         {
-            costColArray[i][j] = make_tuple(costMatrixOriginal[i][j], j);
+            costColArray[i][j].first = costMatrixOriginal[i][j];
+            costColArray[i][j].second = j;
         }
     }
 
