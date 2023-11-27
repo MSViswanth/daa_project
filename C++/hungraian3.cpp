@@ -97,14 +97,24 @@ void coverZeros(std::vector<std::vector<double>> &costMatrix,
 
     // initialize two integer array, with infinity values in them.
     std::vector<double> minRow(n, INF), minCol(m, INF);
-    while (!optimalSolutionFound)
-    {        
-        // Step 3 - Wikipedia
-        for(int i=0; i<n;++i){
-            for(int j =0; j<m;++j){
-                
+
+    // Step 3 - Wikipedia
+    for (int i = 0; i < n; ++i)
+    {
+        for (int j = 0; j < m; ++j)
+        {
+            if (costMatrix[i][j] == 0 && !rowCovered[i] && !colCovered[j])
+            {
+                rowCovered[i] = true;
+                colCovered[i] = true;
+                starAndPrime[i][j] = 0;
             }
-        }        
+        }
+    }
+    // Step 4 - Wikipedia
+    while (!optimalSolutionFound)
+    {
+        
         
         if (n == costMatrix.size() && n == costMatrix.size()) // Change this
         {
