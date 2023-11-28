@@ -6,6 +6,14 @@
 #include <cmath>
 #include <limits>
 #include <chrono>
+#include <vector>
+#include <tuple>
+#include <iostream>
+#include <algorithm>
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <chrono>
 
 std::vector<std::vector<double>> generateCostMatrix(const std::vector<std::pair<double, double>> &setA,
                                                     const std::vector<std::pair<double, double>> &setB)
@@ -382,12 +390,46 @@ void print2DArray(std::vector<std::vector<double>> costMatrix)
     std::cout << "\n"
               << std::endl;
 }
+std::vector<std::pair<double, double>> readCSV(const std::string &filename)
+{
+    std::ifstream file(filename);
+    std::vector<std::pair<double, double>> points;
+
+    if (file.is_open())
+    {
+        std::string line;
+        while (std::getline(file, line))
+        {
+            std::stringstream linestream(line);
+            std::string value;
+            std::vector<double> row;
+
+            while (std::getline(linestream, value, ','))
+            {
+                row.push_back(std::stod(value));
+            }
+
+            if (row.size() == 2)
+            {
+                points.emplace_back(row[0], row[1]);
+            }
+        }
+        file.close();
+    }
+
+    return points;
+}
 
 int main()
 {
     // Example input for setA and setB
-    std::vector<std::pair<double, double>> setA = {{3.0, 2.0}, {4.0, 1.0}, {8.0, 5.0}};
-    std::vector<std::pair<double, double>> setB = {{1.0, 2.0}, {3.0, 6.0}, {1.0, 5.0}};
+    // std::vector<std::pair<double, double>> setA = {{3.0, 2.0}, {4.0, 1.0}, {8.0, 5.0}};
+    // std::vector<std::pair<double, double>> setB = {{1.0, 2.0}, {3.0, 6.0}, {1.0, 5.0}};
+
+    std::string setAfilename = "..\\Dataset\\setA_1000.csv";
+    std::string setBfilename = "..\\Dataset\\setB_1000.csv";
+    std::vector<std::pair<double, double>> setA = readCSV(setAfilename);
+    std::vector<std::pair<double, double>> setB = readCSV(setBfilename);
 auto start = std::chrono::steady_clock::now();
     // Step 1: Generate cost matrix
     std::vector<std::vector<double>> costMatrix = generateCostMatrix(setA, setB);
