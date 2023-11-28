@@ -21,13 +21,13 @@ class hungarian_algorithm:
         for i in range(len_A):
             for j in range(len_B):
                 cost_matrix[i][j] = math.dist(setA[i],setB[j]) #takes O(n^2) time and O(n^2) space
+                print(i,j,setA[i],setB[j], cost_matrix[i][j]) 
         return cost_matrix
 
     def calDistance_MPairs(self, cost_matrix):
         row, col = linear_sum_assignment(cost_matrix)
         # Calculate the sum of minimum distances
         mimimum_distance = cost_matrix[row, col].sum() #takes O(n^3) time and O(1) space
-        #print(cost_matrix[row, col])
         # Construct the matching pairs
         matching_pairs = [(row, col) for row, col in zip(row, col)] #takes O(n^2) time and O(1) space
         return mimimum_distance, matching_pairs
@@ -47,13 +47,19 @@ def read_csv(filename):
     return points
 
 start_time = time.time()
-setAfilename = "/Users/guna/Education/Masters/2ndSemester/COT6405_DAA/daa_project/Dataset/setA_1000.csv"
-setBfilename = "/Users/guna/Education/Masters/2ndSemester/COT6405_DAA/daa_project/Dataset/setB_1000.csv"
+setAfilename = "/Users/guna/Education/Masters/2ndSemester/COT6405_DAA/daa_project/Dataset/setA.csv"
+setBfilename = "/Users/guna/Education/Masters/2ndSemester/COT6405_DAA/daa_project/Dataset/setB.csv"
 setA = read_csv(setAfilename)
 setB = read_csv(setBfilename)
+# setA = [(3,2),(8,5),(4,1)]
+# setB = [(1,2),(1,5),(4,6)]
 hungarian =  hungarian_algorithm(setA,setB)
 cost_matrix = hungarian.cost_matrix()
+print(setA)
+print(setB)
+print(cost_matrix)
 mimimum_distance, matching_pairs = hungarian.calDistance_MPairs(cost_matrix)
+
 print("Total Minimum distance:", mimimum_distance)
 print("Matching pairs:", matching_pairs)
 execution_time = time.time() - start_time
