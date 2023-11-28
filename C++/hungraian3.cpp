@@ -5,6 +5,7 @@
 #include <vector>
 #include <cmath>
 #include <limits>
+#include <chrono>
 
 std::vector<std::vector<double>> generateCostMatrix(const std::vector<std::pair<double, double>> &setA,
                                                     const std::vector<std::pair<double, double>> &setB)
@@ -74,56 +75,40 @@ void columnReduction(std::vector<std::vector<double>> &costMatrix)
 
 // Step 4
 
-void coverZeros(std::vector<std::vector<double>> &costMatrix,
-                std::vector<bool> &rowCovered,
-                std::vector<bool> &colCovered)
+std::vector<std::vector<int>> coverZeros(std::vector<std::vector<double>> costMatrix,
+                                         std::vector<bool> &rowCovered,
+                                         std::vector<bool> &colCovered)
 {
     const int INF = std::numeric_limits<int>::max() / 2;
+
+    double minUncovered = INFINITY;
+
     // number of rows
     const size_t n = costMatrix.size();
 
     // number of columns
     const size_t m = costMatrix[0].size();
-    // std::vector<bool> rowMarked(costMatrix.size(), false);
-    // std::vector<bool> colMarked(costMatrix.size(), false);
-    // std::vector<std::vector<int>> starredZeroInRow(n, std::vector<int>(2, -1));
-    // std::vector<std::vector<int>> starredZeroInCol(m, std::vector<int>(2, -1));
-    // std::vector<std::vector<int>> primedZeroInRow(n, std::vector<int>(2, -1));
-    // std::vector<std::vector<int>> primedZeroInCol(m, std::vector<int>(2, -1));
+
+    int numberOfLines = 0;
+
+    bool optimalSolutionFound = false;
     std::vector<std::vector<int>> encounteredStarred(0);
     std::vector<std::vector<int>> encounteredPrime(0);
 
     std::vector<std::vector<int>> starAndPrime(n, std::vector<int>(m, -1));
 
-    // rowCovered = rowCovered1;
-    // colCovered = colCovered1;
-    bool optimalSolutionFound = false;
-
-    int totalZeroes = 0;
-
-    for (int i = 0; i < n; ++i)
-    {
-        for (int j = 0; j < m; ++j)
-        {
-            if (costMatrix[i][j] == 0)
-            {
-                totalZeroes++;
-            }
-        }
-    }
-
-    // initialize two integer array, with infinity values in them.
-    std::vector<double> minRow(n, INF), minCol(m, INF);
+    std::vector<bool> rowMarked(costMatrix.size(), false);
+    std::vector<bool> colMarked(costMatrix.size(), false);
 
     // Step 3 - Wikipedia
     for (int i = 0; i < n; ++i)
     {
         for (int j = 0; j < m; ++j)
         {
-            if (costMatrix[i][j] == 0 && !rowCovered[i] && !colCovered[j])
+            if (costMatrix[i][j] == 0 && !rowMarked[i] && !colMarked[j])
             {
-                rowCovered[i] = true;
-                colCovered[i] = true;
+                rowMarked[i] = true;
+                colMarked[i] = true;
                 starAndPrime[i][j] = 0; // Starring Zero.
                 // starredZeroInRow[i] = {i, j}; // Storing the location of starred zero for a row
                 // starredZeroInCol[j] = {i, j}; // Storing the location of starred zero for a column
@@ -131,24 +116,25 @@ void coverZeros(std::vector<std::vector<double>> &costMatrix,
         }
     }
 
-    // Uncover everything
-    rowCovered.assign(n, false);
-    colCovered.assign(m, false);
-    int numberOfRowsCovered = 0;
-    int numberOfColsCovered = 0;
+    // // Uncover everything
+    rowMarked.assign(n, false);
+    colMarked.assign(m, false);
+
     int starredZeroCol = -1; // Column number of starred zero found in row.
     int starredZeroRow = -1; // Row number of starred zero found in col.
 
     // int primedZeroCol = -1; // Column number of primed zero found in row.
     bool subStepSkip = false;
-    int numberOfUncoveredZeroes = 0;
+
     std::vector<std::vector<int>> nonCoveredZeroes(0);
 
     // Step 4 - Wikipedia
 
-    step4: do
+step4:
+    do
     {
-
+        colCovered.assign(m, false);
+        rowCovered.assign(n, false);
         // Cover Columns
         for (int i = 0; i < n; ++i)
         {
@@ -244,9 +230,7 @@ void coverZeros(std::vector<std::vector<double>> &costMatrix,
                             subStepSkip = true;
                             break;
                         }
-                    }
-
-                    while (true);
+                    } while (true);
 
                     for (auto &encounteredStarredZero : encounteredStarred)
                     {
@@ -266,18 +250,62 @@ void coverZeros(std::vector<std::vector<double>> &costMatrix,
                             }
                         }
                     }
-                    rowCovered.assign(n, false);
-                    colCovered.assign(m, false);
                     goto step4;
                 }
             }
         }
     }
-    } while(true);
+    } while (true);
+    numberOfLines = 0;
+    for (int i = 0; i < n; ++i)
+    {
+        if (rowCovered[i] || colCovered[i])
+        {
+            numberOfLines++;
+        }
+    }
+    if (numberOfLines != n)
+    {
+        minUncovered = INFINITY;
+        for (int i = 0; i < n; ++i)
+        {
+            for (int j = 0; j < m; ++j)
+            {
+                if (!(rowCovered[i] || colCovered[j]))
+                {
+                    minUncovered = std::min(minUncovered, costMatrix[i][j]);
+                }
+            }
+        }
+
+        for (int i = 0; i < n; ++i)
+        {
+            for (int j = 0; j < m; ++j)
+            {
+                if (!rowCovered[i])
+                {
+                    costMatrix[i][j] -= minUncovered;
+                }
+                if (colCovered[j])
+                {
+                    costMatrix[i][j] += minUncovered;
+                }
+                if (starAndPrime[i][j] == 1)
+                {
+                    starAndPrime[i][j] = -1;
+                }
+            }
+        }
+
+        goto step4;
+    }
+    else if (numberOfLines == n)
+    {
+        optimalSolutionFound = true;
+        return starAndPrime;
+    }
 }
 // }
-
-// Step 5
 
 // Step 6
 
@@ -358,11 +386,11 @@ void print2DArray(std::vector<std::vector<double>> costMatrix)
 int main()
 {
     // Example input for setA and setB
-    // std::vector<std::pair<double, double>> setA = {{3.0, 2.0}, {4.0, 1.0}, {8.0, 5.0}};
-    // std::vector<std::pair<double, double>> setB = {{1.0, 2.0}, {3.0, 6.0}, {1.0, 5.0}};
-
+    std::vector<std::pair<double, double>> setA = {{3.0, 2.0}, {4.0, 1.0}, {8.0, 5.0}};
+    std::vector<std::pair<double, double>> setB = {{1.0, 2.0}, {3.0, 6.0}, {1.0, 5.0}};
+auto start = std::chrono::steady_clock::now();
     // Step 1: Generate cost matrix
-    // std::vector<std::vector<double>> costMatrix = generateCostMatrix(setA, setB);
+    std::vector<std::vector<double>> costMatrix = generateCostMatrix(setA, setB);
 
     // std::vector<std::vector<double>> costMatrix = {
     //     {19.1, 17.6, 24.7, 19.3, 18.7},
@@ -371,17 +399,18 @@ int main()
     //     {6.6, 4.6, 3.7, 9.1, 2.7},
     //     {23.6, 15.4, 19.8, 25.1, 17.3}};
     // https://brilliant.org/wiki/hungarian-matching/
-    std::vector<std::vector<double>> costMatrix = {
-        {108, 125, 150},
-        {150, 135, 175},
-        {122, 148, 250},
-    };
+    // std::vector<std::vector<double>> costMatrix = {
+    //     {108, 125, 150},
+    //     {150, 135, 175},
+    //     {122, 148, 250},
+    // };
+
     // std::vector<std::vector<double>> costMatrix = {
     //     {0, 108, 0, 150},
     //     {150, 0, 135, 0},
     //     {0, 122, 148, 250},
     //     {0, 4, 5, 6}};
-
+std::vector<std::vector<double>> costMatrixOriginal = costMatrix;
     // Step 2: Row reduction
     rowReduction(costMatrix);
 
@@ -391,25 +420,36 @@ int main()
     // Initializing row and column coverage vectors
     std::vector<bool> rowCovered(costMatrix.size(), false);
     std::vector<bool> colCovered(costMatrix[0].size(), false);
-
+    
     // Step 4: Cover zeros
-    coverZeros(costMatrix, rowCovered, colCovered);
+
+    auto assignment = coverZeros(costMatrix, rowCovered, colCovered);
 
     // Step 5: Adjust the matrix
     // sadjustMatrix(costMatrix, rowCovered, colCovered);
 
     // Step 6: Assign jobs to workers
-    auto assignment = assignJobs(costMatrix, rowCovered, colCovered);
+    // auto assignment = assignJobs(costMatrix, rowCovered, colCovered);
 
-    std::vector<std::pair<int, int>> matching;
+    std::vector<std::pair<int, int>> matching(0);
     double sumDistances = 0.0;
     for (int i = 0; i < costMatrix.size(); ++i)
     {
-        // if (assignment[i] != -1) {
-        matching.emplace_back(i, assignment[i]);
-        sumDistances = sumDistances + std::abs(costMatrix[i][assignment[i]]);
-        // }
+        for (int j = 0; j < costMatrix[0].size(); ++j)
+        {
+            // std::cout<<costMatrixOriginal[i][j] << " ";
+            if (assignment[i][j] == 0)
+            {
+                sumDistances += costMatrixOriginal[i][j];
+                matching.push_back({i,j});
+            }
+        }
+        // std::cout<<std::endl;
     }
+    auto stop = std::chrono::steady_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+    std::cout << "Time taken by Hungarian Algorithm: "
+         << duration.count() << " microseconds" << std::endl;
 
     std::cout << "Sum of minimum distances: " << sumDistances << std::endl;
     std::cout << "Matching pairs:" << std::endl;
