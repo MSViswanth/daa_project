@@ -83,9 +83,9 @@ void columnReduction(std::vector<std::vector<double>> &costMatrix)
 
 // Step 4
 
-std::vector<std::vector<int>> coverZeros(std::vector<std::vector<double>> costMatrix,
-                                         std::vector<bool> &rowCovered,
-                                         std::vector<bool> &colCovered)
+void coverZeros(std::vector<std::vector<double>> &costMatrix,
+                std::vector<bool> &rowCovered,
+                std::vector<bool> &colCovered, std::vector<std::vector<int>> &starAndPrime)
 {
     const int INF = std::numeric_limits<int>::max() / 2;
 
@@ -102,8 +102,6 @@ std::vector<std::vector<int>> coverZeros(std::vector<std::vector<double>> costMa
     bool optimalSolutionFound = false;
     std::vector<std::vector<int>> encounteredStarred(0);
     std::vector<std::vector<int>> encounteredPrime(0);
-
-    std::vector<std::vector<int>> starAndPrime(n, std::vector<int>(m, -1));
 
     std::vector<bool> rowMarked(costMatrix.size(), false);
     std::vector<bool> colMarked(costMatrix.size(), false);
@@ -310,7 +308,6 @@ step4:
     else if (numberOfLines == n)
     {
         optimalSolutionFound = true;
-        return starAndPrime;
     }
 }
 // }
@@ -430,7 +427,7 @@ int main()
     std::string setBfilename = "..\\Dataset\\setB_1000.csv";
     std::vector<std::pair<double, double>> setA = readCSV(setAfilename);
     std::vector<std::pair<double, double>> setB = readCSV(setBfilename);
-auto start = std::chrono::steady_clock::now();
+    auto start = std::chrono::steady_clock::now();
     // Step 1: Generate cost matrix
     std::vector<std::vector<double>> costMatrix = generateCostMatrix(setA, setB);
 
@@ -452,7 +449,7 @@ auto start = std::chrono::steady_clock::now();
     //     {150, 0, 135, 0},
     //     {0, 122, 148, 250},
     //     {0, 4, 5, 6}};
-std::vector<std::vector<double>> costMatrixOriginal = costMatrix;
+    std::vector<std::vector<double>> costMatrixOriginal = costMatrix;
     // Step 2: Row reduction
     rowReduction(costMatrix);
 
@@ -462,11 +459,11 @@ std::vector<std::vector<double>> costMatrixOriginal = costMatrix;
     // Initializing row and column coverage vectors
     std::vector<bool> rowCovered(costMatrix.size(), false);
     std::vector<bool> colCovered(costMatrix[0].size(), false);
-    
+
     // Step 4: Cover zeros
-
-    auto assignment = coverZeros(costMatrix, rowCovered, colCovered);
-
+    std::vector<std::vector<int>> starAndPrime(setA.size(), std::vector<int>(setB.size(), -1));
+    coverZeros(costMatrix, rowCovered, colCovered, starAndPrime);
+    auto assignment = starAndPrime;
     // Step 5: Adjust the matrix
     // sadjustMatrix(costMatrix, rowCovered, colCovered);
 
@@ -483,7 +480,7 @@ std::vector<std::vector<double>> costMatrixOriginal = costMatrix;
             if (assignment[i][j] == 0)
             {
                 sumDistances += costMatrixOriginal[i][j];
-                matching.push_back({i,j});
+                matching.push_back({i, j});
             }
         }
         // std::cout<<std::endl;
@@ -491,7 +488,7 @@ std::vector<std::vector<double>> costMatrixOriginal = costMatrix;
     auto stop = std::chrono::steady_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
     std::cout << "Time taken by Hungarian Algorithm: "
-         << duration.count() << " microseconds" << std::endl;
+              << duration.count() << " microseconds" << std::endl;
 
     std::cout << "Sum of minimum distances: " << sumDistances << std::endl;
     std::cout << "Matching pairs:" << std::endl;
