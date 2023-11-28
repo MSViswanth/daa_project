@@ -279,14 +279,14 @@ int main()
 
     neighborly(costPosArray, setA, setB);
     auto stop = steady_clock::now();
-    auto duration = duration_cast<microseconds>(stop - start);
+    auto duration = duration_cast<seconds>(stop - start);
     cout << "Time taken by Neighborly Recursion: "
-         << duration.count() << " microseconds" << endl;
+         << duration.count() << " Seconds" << endl;
     cout << "Sum of distances: " << sumofDistances << endl;
-    for (int i = 0; i < setX.size(); ++i)
-    {
-        cout << "(" << setX[i].first << ", " << setX[i].second << ") --> "
-             << "(" << setY[i].first << ", " << setY[i].second << ")" << endl;
-    }
+    // for (int i = 0; i < setX.size(); ++i)
+    // {
+    //     cout << "(" << setX[i].first << ", " << setX[i].second << ") --> "
+    //          << "(" << setY[i].first << ", " << setY[i].second << ")" << endl;
+    // }
     return 0;
 }

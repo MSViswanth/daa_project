@@ -47,14 +47,14 @@ def read_csv(filename):
     return points
 
 start_time = time.time()
-setAfilename = "/Users/guna/Education/Masters/2ndSemester/COT6405_DAA/daa_project/Dataset/setA_1000.csv"
-setBfilename = "/Users/guna/Education/Masters/2ndSemester/COT6405_DAA/daa_project/Dataset/setB_1000.csv"
+setAfilename = "/Users/guna/Education/Masters/2ndSemester/COT6405_DAA/daa_project/Dataset/setA_10000.csv"
+setBfilename = "/Users/guna/Education/Masters/2ndSemester/COT6405_DAA/daa_project/Dataset/setB_10000.csv"
 setA = read_csv(setAfilename)
 setB = read_csv(setBfilename)
 hungarian =  hungarian_algorithm(setA,setB)
 cost_matrix = hungarian.cost_matrix()
 mimimum_distance, matching_pairs = hungarian.calDistance_MPairs(cost_matrix)
 print("Total Minimum distance:", mimimum_distance)
-print("Matching pairs:", matching_pairs)
+# print("Matching pairs:", matching_pairs)
 execution_time = time.time() - start_time
 print("Execution time is " + str(execution_time) + " seconds")
