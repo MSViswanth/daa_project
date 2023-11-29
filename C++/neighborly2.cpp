@@ -58,11 +58,20 @@ void neighborly(vector<pair<double, double>> setA, vector<pair<double, double>> 
     vector<int> competition(0);
     vector<vector<double>> delta(0);
     int assignmentX;
-    int assignmentY;
+    int assignmentY = -1;
 
     double minValCurrent;
 
     vector<double> chosenDelta;
+
+    competition.clear();
+    delta.clear();
+
+    for (int i = 0; i < costColArray.size(); ++i)
+    {
+        sort(costColArray[i].begin(), costColArray[i].end());
+    }
+
 neighborly:
     do
     {
@@ -71,15 +80,28 @@ neighborly:
 
         competition.clear();
         delta.clear();
+        minValCurrent = minVal;
 
         for (int i = 0; i < costColArray.size(); ++i)
         {
-            sort(costColArray[i].begin(), costColArray[i].end());
+
             minValCurrent = minVal;
-            minVal = min(minVal, costColArray[i][0].first);
-            if (minVal < minValCurrent)
+            if (costColArray[i][0].second == assignmentY)
             {
-                minValRow = i;
+                costColArray[i][0].second = -1;
+                costColArray[i].emplace_back(costColArray[i][0]);
+
+                costColArray[i].erase(costColArray[i].begin());
+
+                goto neighborly;
+            }
+            else
+            {
+                minVal = min(minVal, costColArray[i][0].first);
+                if (minVal < minValCurrent)
+                {
+                    minValRow = i;
+                }
             }
         }
 
@@ -111,6 +133,7 @@ neighborly:
         assignmentX = chosenDelta[1];
 
         assignmentY = costColArray[assignmentX][0].second;
+        numberOfIterations--;
 
         sumofDistances += costColArray[assignmentX][0].first;
 
@@ -118,16 +141,16 @@ neighborly:
         setX.push_back(setA[assignmentX]);
         setY.push_back(setB[assignmentY]);
 
-        for (auto &innerVector : costColArray)
-        {
-            for (auto &pairElement : innerVector)
-            {
-                if (pairElement.second == assignmentY)
-                {
-                    pairElement.first = INFINITY;
-                }
-            }
-        }
+        // for (auto &innerVector : costColArray)
+        // {
+        //     for (auto &pairElement : innerVector)
+        //     {
+        //         if (pairElement.second == assignmentY)
+        //         {
+        //             pairElement.first = INFINITY;
+        //         }
+        //     }
+        // }
         // Reduce costColArray
         for (int i = 0; i < costColArray[assignmentX].size(); ++i)
         {
@@ -135,7 +158,6 @@ neighborly:
         }
 
         // costColArray.erase(costColArray.begin()+minValRow);
-        numberOfIterations--;
 
         // cout<<numberOfIterations<<endl;
 
@@ -177,6 +199,8 @@ int main()
     // Given sets
     // vector<pair<double, double>> setA = {{3.0, 2.0}, {4.0, 1.0}, {8.0, 5.0}};
     // vector<pair<double, double>> setB = {{1.0, 2.0}, {3.0, 6.0}, {1.0, 5.0}};
+    // vector<pair<double, double>> setA = {{1.2, 1.4}, {2.3, 3.6}, {5.6, 7.3}};
+    // vector<pair<double, double>> setB = {{7.9, 3.1}, {2.7, 3.2}, {2.3, 7.4}};
     std::string setAfilename = "..\\Dataset\\setA_1000.csv";
     std::string setBfilename = "..\\Dataset\\setB_1000.csv";
     std::vector<std::pair<double, double>> setA = readCSV(setAfilename);
