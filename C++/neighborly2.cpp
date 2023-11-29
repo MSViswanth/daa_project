@@ -177,8 +177,11 @@ int main()
     // Given sets
     // vector<pair<double, double>> setA = {{3.0, 2.0}, {4.0, 1.0}, {8.0, 5.0}};
     // vector<pair<double, double>> setB = {{1.0, 2.0}, {3.0, 6.0}, {1.0, 5.0}};
-    std::string setAfilename = "/Users/guna/Education/Masters/2ndSemester/COT6405_DAA/daa_project/Dataset/setA_1000.csv";
-    std::string setBfilename = "/Users/guna/Education/Masters/2ndSemester/COT6405_DAA/daa_project/Dataset/setB_1000.csv";
+    // vector<pair<double, double>> setA = {{1.2, 1.4}, {2.3, 3.6}, {5.6, 7.3}};
+    // vector<pair<double, double>> setB = {{7.9, 3.1}, {2.7, 3.2}, {2.3, 7.4}};
+
+    std::string setAfilename = "/Users/guna/Education/Masters/2ndSemester/COT6405_DAA/daa_project/Dataset/setA_10.csv";
+    std::string setBfilename = "/Users/guna/Education/Masters/2ndSemester/COT6405_DAA/daa_project/Dataset/setB_10.csv";
     std::vector<std::pair<double, double>> setA = readCSV(setAfilename);
     std::vector<std::pair<double, double>> setB = readCSV(setBfilename);
 
@@ -192,10 +195,10 @@ int main()
     cout << "Time taken by Neighborly: "
          << duration.count() << " microseconds" << endl;
     cout << "Sum of distances: " << sumofDistances << endl;
-    for (int i = 0; i < setX.size(); ++i)
-    {
-        cout << "(" << setX[i].first << ", " << setX[i].second << ") --> "
-             << "(" << setY[i].first << ", " << setY[i].second << ")" << endl;
-    }
+    // for (int i = 0; i < setX.size(); ++i)
+    // {
+    //     cout << "(" << setX[i].first << ", " << setX[i].second << ") --> "
+    //          << "(" << setY[i].first << ", " << setY[i].second << ")" << endl;
+    // }
     return 0;
 }

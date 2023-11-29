@@ -47,8 +47,8 @@ def read_csv(filename):
     return points
 
 start_time = time.time()
-setAfilename = "/Users/guna/Education/Masters/2ndSemester/COT6405_DAA/daa_project/Dataset/setA_10000.csv"
-setBfilename = "/Users/guna/Education/Masters/2ndSemester/COT6405_DAA/daa_project/Dataset/setB_10000.csv"
+setAfilename = "/Users/guna/Education/Masters/2ndSemester/COT6405_DAA/daa_project/Dataset/setA_2000.csv"
+setBfilename = "/Users/guna/Education/Masters/2ndSemester/COT6405_DAA/daa_project/Dataset/setB_2000.csv"
 setA = read_csv(setAfilename)
 setB = read_csv(setBfilename)
 hungarian =  hungarian_algorithm(setA,setB)
