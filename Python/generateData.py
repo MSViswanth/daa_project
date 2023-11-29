@@ -14,7 +14,7 @@ def generate_random_csv(filename, num_rows):
             }
             writer.writerow(row)
 
-# Generate CSV file with 10 rows
-N = 30000
-generate_random_csv('/Dataset/setA_'+str(N)+'.csv', N)
-generate_random_csv('/Dataset/setB_'+str(N)+'.csv', N)
+# Generate CSV file
+N = 10
+generate_random_csv('/Users/guna/Education/Masters/2ndSemester/COT6405_DAA/daa_project/Dataset/setA_'+str(N)+'.csv', N)
+generate_random_csv('/Users/guna/Education/Masters/2ndSemester/COT6405_DAA/daa_project/Dataset/setB_'+str(N)+'.csv', N)

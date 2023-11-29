@@ -35,10 +35,10 @@ std::vector<std::vector<double>> generateCostMatrix(const std::vector<std::pair<
 
 // Step 2
 
-void rowReduction(std::vector<std::vector<double>> &costMatrix)
+std::vector<std::vector<double>> rowReduction(std::vector<std::vector<double>> &costMatrix)
 {
     for (size_t i = 0; i < costMatrix.size(); ++i)
-    {
+    { 
         // Find the minimum value in the current row
         double minVal = std::numeric_limits<double>::max();
         for (size_t j = 0; j < costMatrix[i].size(); ++j)
@@ -55,6 +55,7 @@ void rowReduction(std::vector<std::vector<double>> &costMatrix)
             costMatrix[i][j] -= minVal;
         }
     }
+    return costMatrix;
 }
 
 // Step 3
@@ -423,8 +424,8 @@ int main()
     // std::vector<std::pair<double, double>> setA = {{3.0, 2.0}, {4.0, 1.0}, {8.0, 5.0}};
     // std::vector<std::pair<double, double>> setB = {{1.0, 2.0}, {3.0, 6.0}, {1.0, 5.0}};
 
-    std::string setAfilename = "..\\Dataset\\setA_1000.csv";
-    std::string setBfilename = "..\\Dataset\\setB_1000.csv";
+    std::string setAfilename = "/Users/guna/Education/Masters/2ndSemester/COT6405_DAA/daa_project/Dataset/setA_50.csv";
+    std::string setBfilename = "/Users/guna/Education/Masters/2ndSemester/COT6405_DAA/daa_project/Dataset/setB_50.csv";
     std::vector<std::pair<double, double>> setA = readCSV(setAfilename);
     std::vector<std::pair<double, double>> setB = readCSV(setBfilename);
     auto start = std::chrono::steady_clock::now();
@@ -451,7 +452,7 @@ int main()
     //     {0, 4, 5, 6}};
     std::vector<std::vector<double>> costMatrixOriginal = costMatrix;
     // Step 2: Row reduction
-    rowReduction(costMatrix);
+    costMatrix = rowReduction(costMatrix);
 
     // Step 3: Column reduction
     columnReduction(costMatrix);
@@ -497,5 +498,72 @@ int main()
         std::cout << "(" << pair.first << ", " << pair.second << ")" << std::endl;
     }
 
+    return 0;
+}
+
+//////
+
+int main() //example of usage
+{
+    using namespace Munkres;
+    using namespace std;
+    
+    std::vector<std::pair<double, double>> setA = {{3.0, 2.0}, {4.0, 1.0}, {8.0, 5.0}};
+    std::vector<std::pair<double, double>> setB = {{1.0, 2.0}, {3.0, 6.0}, {1.0, 5.0}};
+
+    std::string setAfilename = "/Users/guna/Education/Masters/2ndSemester/COT6405_DAA/daa_project/Dataset/setA_50.csv";
+    std::string setBfilename = "/Users/guna/Education/Masters/2ndSemester/COT6405_DAA/daa_project/Dataset/setB_50.csv";
+    std::vector<std::pair<double, double>> setA = readCSV(setAfilename);
+    std::vector<std::pair<double, double>> setB = readCSV(setBfilename);
+    auto start = std::chrono::steady_clock::now();
+    // Step 1: Generate cost matrix
+
+    std::vector<std::vector<double>> costMatrix(setA.size(), std::vector<double>(setB.size(), 0.0));
+
+    for (size_t i = 0; i < setA.size(); ++i)
+    {
+        for (size_t j = 0; j < setB.size(); ++j)
+        {
+            double distance = std::sqrt(std::pow(setA[i].first - setB[j].first, 2) +
+                                        std::pow(setA[i].second - setB[j].second, 2));
+            costMatrix[i][j] = distance;
+        }
+    }
+    std::list<std::list<double>> matrix;
+
+    // Convert vector of vectors to list of lists
+    for (const auto& innerVector : costMatrix) {
+        std::list<double> tempList(innerVector.begin(), innerVector.end());
+        matrix.push_back(tempList);
+    }
+    //list<list<double>> matrix = costMatrix;
+     //std::vector<std::vector<double>> matrix = costMatrix;
+
+    // work on multiple containers of the STL
+    // list<list<double>> matrix {{85,  12,  36,  83,  50,  96,  12,  1 },
+    //                         {84,  35,  16,  17,  40,  94,  16,  52},
+    //                         {14,  16,  8 ,  53,  14,  12,  70,  50},
+    //                         {73,  83,  19,  44,  83,  66,  71,  18},
+    //                         {36,  45,  29,  4 ,  61,  15,  70,  47},
+    //                         {7 ,  14,  11,  69,  57,  32,  37,  81},
+    //                         {9 ,  65,  38,  74,  87,  51,  86,  52},
+    //                         {52,  40,  56,  10,  42,  2 ,  26,  36},
+    //                         {85,  86,  36,  90,  49,  89,  41,  74},
+    //                         {40,  67,  2 ,  70,  18,  5 ,  94,  43},
+    //                         {85,  12,  36,  83,  50,  96,  12,  1 },
+    //                         {84,  35,  16,  17,  40,  94,  16,  52},
+    //                         {14,  16,  8 ,  53,  14,  12,  70,  50},
+    //                         {73,  83,  19,  44,  83,  66,  71,  18},
+    //                         {36,  45,  29,  4 ,  61,  15,  70,  47},
+    //                         {7 ,  14,  11,  69,  57,  32,  37,  81},
+    //                         {9 ,  65,  38,  74,  87,  51,  86,  52},
+    //                         {52,  40,  56,  10,  42,  2 ,  26,  36},
+    //                         {85,  86,  36,  90,  49,  89,  41,  74},
+    //                         {40,  67,  2 ,  70,  18,  5 ,  94,  43}};
+                                     
+    auto res = hungarian(matrix);
+    // std::cout << "Optimal cost: " << res << std::endl;
+    // std::cout << "----------------- \n\n";
+    
     return 0;
 }
