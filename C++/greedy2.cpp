@@ -87,14 +87,15 @@ void printPoints(const std::vector<std::pair<double, double>> &points)
 
 int main()
 {
-    // std::vector<std::pair<double, double>> setA = {{3.0, 2.0}, {4.0, 1.0}, {8.0, 5.0}};
-    // std::vector<std::pair<double, double>> setB = {{1.0, 2.0}, {3.0, 6.0}, {1.0, 5.0}};
-    std::string setAfilename = "/Users/guna/Education/Masters/2ndSemester/COT6405_DAA/daa_project/Dataset/setA_10000.csv";
-    std::string setBfilename = "/Users/guna/Education/Masters/2ndSemester/COT6405_DAA/daa_project/Dataset/setB_10000.csv";
+//     std::vector<std::pair<double, double>> setA = {{3.0, 2.0}, {4.0, 1.0}, {8.0, 5.0}};
+//     std::vector<std::pair<double, double>> setB = {{1.0, 2.0}, {3.0, 6.0}, {1.0, 5.0}};
+    std::string setAfilename = "/Users/guna/Education/Masters/2ndSemester/COT6405_DAA/daa_project/Dataset/setA_5000.csv";
+    std::string setBfilename = "/Users/guna/Education/Masters/2ndSemester/COT6405_DAA/daa_project/Dataset/setB_5000.csv";
     std::vector<std::pair<double, double>> setA = readCSV(setAfilename);
     std::vector<std::pair<double, double>> setB = readCSV(setBfilename);
     int N = setA.size();
 
+    auto start = high_resolution_clock::now();
     // Generating a cost_array
     std::vector<std::vector<double>> sorted_cost_array;
     for (int i = 0; i < N; ++i)
@@ -110,12 +111,12 @@ int main()
     std::sort(sorted_cost_array.begin(), sorted_cost_array.end());
 
     // Creating an instance of Greedy2 and calculating minimum distance
-    auto start = high_resolution_clock::now();
+    // auto start = high_resolution_clock::now();
     Greedy2 greedy_algo(sorted_cost_array, N);
     auto result = greedy_algo.greedy2();
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop - start);
-    cout << "Time taken by Greedy2 Algorithmm: "
+    cout << "Time taken by Greedy Algorithm: "
          << duration.count() << " microseconds" << endl;
     std::cout << "Minimum Distance: " << result.first << std::endl;
     // std::cout << "Matching pairs:" << std::endl;

@@ -216,10 +216,10 @@ int main()
     cout << "Time taken by Neighborly: "
          << duration.count() << " microseconds" << endl;
     cout << "Sum of distances: " << sumofDistances << endl;
-    for (int i = 0; i < setX.size(); ++i)
-    {
-        cout << "(" << setX[i].first << ", " << setX[i].second << ") --> "
-             << "(" << setY[i].first << ", " << setY[i].second << ")" << endl;
-    }
+    // for (int i = 0; i < setX.size(); ++i)
+    // {
+    //     cout << "(" << setX[i].first << ", " << setX[i].second << ") --> "
+    //          << "(" << setY[i].first << ", " << setY[i].second << ")" << endl;
+    // }
     return 0;
 }
