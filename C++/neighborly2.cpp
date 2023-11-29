@@ -6,6 +6,8 @@
 #include <sstream>
 #include <string>
 #include <chrono>
+#include "avl_tree.h"
+
 using namespace std;
 
 // Given sets
@@ -62,6 +64,8 @@ void neighborly(vector<pair<double, double>> setA, vector<pair<double, double>> 
 
     double minValCurrent;
 
+    AVLTree previousAssignments;
+
     vector<double> chosenDelta;
 
     competition.clear();
@@ -86,7 +90,8 @@ neighborly:
         {
 
             minValCurrent = minVal;
-            if (costColArray[i][0].second == assignmentY)
+            if (previousAssignments.searchTree(costColArray[i][0].second))
+            // if (costColArray[i][0].second == assignmentY)
             {
                 costColArray[i][0].second = -1;
                 costColArray[i].emplace_back(costColArray[i][0]);
@@ -107,7 +112,7 @@ neighborly:
 
         for (int i = 0; i < costColArray.size(); ++i)
         {
-            if (costColArray[minValRow][0].second == costColArray[i][0].second)
+            if ((costColArray[minValRow][0].second == costColArray[i][0].second) && costColArray[i][0].second != assignmentY)
             {
                 // cout << i;
                 // cout << "Finish the rest after";
@@ -123,6 +128,14 @@ neighborly:
         {
             for (auto &competitionRow : competition)
             {
+                if (previousAssignments.searchTree(costColArray[competitionRow][1].second))
+                {
+                    costColArray[competitionRow][1].second = -1;
+                    costColArray[competitionRow].emplace_back(costColArray[competitionRow][1]);
+
+                    costColArray[competitionRow].erase(costColArray[competitionRow].begin()+1);
+                    goto neighborly;
+                }
                 delta.push_back({{costColArray[competitionRow][1].first - costColArray[competitionRow][0].first, double(competitionRow)}});
             }
         }
@@ -133,6 +146,7 @@ neighborly:
         assignmentX = chosenDelta[1];
 
         assignmentY = costColArray[assignmentX][0].second;
+        previousAssignments.insert(assignmentY);
         numberOfIterations--;
 
         sumofDistances += costColArray[assignmentX][0].first;
@@ -201,8 +215,8 @@ int main()
     // vector<pair<double, double>> setB = {{1.0, 2.0}, {3.0, 6.0}, {1.0, 5.0}};
     // vector<pair<double, double>> setA = {{1.2, 1.4}, {2.3, 3.6}, {5.6, 7.3}};
     // vector<pair<double, double>> setB = {{7.9, 3.1}, {2.7, 3.2}, {2.3, 7.4}};
-    std::string setAfilename = "..\\Dataset\\setA_1000.csv";
-    std::string setBfilename = "..\\Dataset\\setB_1000.csv";
+    std::string setAfilename = "..\\Dataset\\setA_4000.csv";
+    std::string setBfilename = "..\\Dataset\\setB_4000.csv";
     std::vector<std::pair<double, double>> setA = readCSV(setAfilename);
     std::vector<std::pair<double, double>> setB = readCSV(setBfilename);
 
