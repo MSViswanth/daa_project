@@ -247,8 +247,8 @@ int main()
     // Given sets
     // vector<pair<double, double>> setA = {{3.0, 2.0}, {4.0, 1.0}, {8.0, 5.0}};
     // vector<pair<double, double>> setB = {{1.0, 2.0}, {3.0, 6.0}, {1.0, 5.0}};
-    std::string setAfilename = "..\\Dataset\\setA_1000.csv";
-    std::string setBfilename = "..\\Dataset\\setB_1000.csv";
+    std::string setAfilename = "../Dataset/setA_10.csv";
+    std::string setBfilename = "../Dataset/setA_10.csv";
     std::vector<std::pair<double, double>> setA = readCSV(setAfilename);
     std::vector<std::pair<double, double>> setB = readCSV(setBfilename);
     int len_A = setA.size();
@@ -283,10 +283,10 @@ int main()
     cout << "Time taken by Neighborly Recursion: "
          << duration.count() << " Seconds" << endl;
     cout << "Sum of distances: " << sumofDistances << endl;
-    // for (int i = 0; i < setX.size(); ++i)
-    // {
-    //     cout << "(" << setX[i].first << ", " << setX[i].second << ") --> "
-    //          << "(" << setY[i].first << ", " << setY[i].second << ")" << endl;
-    // }
+    for (int i = 0; i < setX.size(); ++i)
+    {
+        cout << "(" << setX[i].first << ", " << setX[i].second << ") --> "
+             << "(" << setY[i].first << ", " << setY[i].second << ")" << endl;
+    }
     return 0;
 }

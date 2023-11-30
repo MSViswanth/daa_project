@@ -215,8 +215,8 @@ int main()
     // vector<pair<double, double>> setB = {{1.0, 2.0}, {3.0, 6.0}, {1.0, 5.0}};
     // vector<pair<double, double>> setA = {{1.2, 1.4}, {2.3, 3.6}, {5.6, 7.3}};
     // vector<pair<double, double>> setB = {{7.9, 3.1}, {2.7, 3.2}, {2.3, 7.4}};
-    std::string setAfilename = "..\\Dataset\\setA_4000.csv";
-    std::string setBfilename = "..\\Dataset\\setB_4000.csv";
+    std::string setAfilename = "../Dataset/setA_10000.csv";
+    std::string setBfilename = "../Dataset/setB_10000.csv";
     std::vector<std::pair<double, double>> setA = readCSV(setAfilename);
     std::vector<std::pair<double, double>> setB = readCSV(setBfilename);
 

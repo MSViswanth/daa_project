@@ -15,6 +15,6 @@ def generate_random_csv(filename, num_rows):
             writer.writerow(row)
 
 # Generate CSV file with 10 rows
-N = 4000
+N = 1500
 generate_random_csv('./Dataset/setA_'+str(N)+'.csv', N)
 generate_random_csv('./Dataset/setB_'+str(N)+'.csv', N)
