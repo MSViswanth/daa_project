@@ -35,12 +35,14 @@ We implemented below algorithms in pyhton and C++ to address the Euclidean Bichr
 3. To run the program follow below steps
     a. For C++ programs
         - Open the respective C++ file in any IDE or text editor
-        - Modify the input file path defined in setAfilename and setAfilename variable in main() function to the path of desired input size from the dataset. You can also generate your own dataset using generateData.py by specifying the input size N
+        - Modify the input file path defined in setAfilename and setBfilename variable in main() function to the path of desired input size from the dataset. You can also generate your own dataset using generateData.py in python folder by specifying the input size N
         - Save the file
         - Compile the file using the command 'g++ -o <MyProgram> Filename.cpp'
         - Run the program ./MyProgram
-    b. For C++ programs
-        - Open the respective C++ file in any IDE or text editor
-        - Modify the input file path defined in setAfilename and setAfilename variable to the path of desired input size from the dataset. You can also generate your own dataset using generateData.py by specifying the input size N
+    b. For python programs
+        - Open the respective python file in any IDE or text editor
+        - Modify the input file path defined in setAfilename and setBfilename variable to the path of desired input size from the dataset. You can also generate your own dataset using generateData.py in python folder by specifying the input size N
         - Save the file
         - Run the python file using the command python MyProgram.py   
+
+Note: We benchmarked the hungarian implementation in C++ with 2000 record(i.e N = 2000). Greedy and neighbourly C++ implementation was benchmarked till 15000 records(i.e N = 15000) 

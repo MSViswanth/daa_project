@@ -116,7 +116,6 @@ int main()
     cout << "Time taken by greedy algorithm: "
          << duration.count() << " microseconds" << endl;
     std::cout << "Total minimum distance by greedy algorithm: " << result.first << std::endl;
-    
 
     /**
      * @brief Snippet to print pair points
