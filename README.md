@@ -1,13 +1,13 @@
-# DAA Term Project
+# COT6405 - Design and Analysis of Algorithms - Term Project
 
 # Overview
-We implemented below algorithms in pyhton and C++ to address the Euclidean Bichromatic Matching problem. The performance of 
+We implemented below algorithms in pyhton and C++ to address the Euclidean Bichromatic Matching problem. 
 
-| Algorithm | Time Complexity |
-| --- | --- |
-| Hungarian | $O(N^3)$ |
-| Greedy | $O(N^2 \log N)$ |
-| Neighbourly | $O(N^2 \log N)$|
+| Algorithm | Time Complexity | Space Complexity |
+| --- | --- | --- |
+| Hungarian | $O(N^3)$ | $O(N^2)$ |
+| Greedy | $O(N^2 \log N)$ | $O(N^2)$ |
+| Neighbourly | $O(N^2 \log N)$| $O(N^2)$ |
 
 # Dependencies
 
