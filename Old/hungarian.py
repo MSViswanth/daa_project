@@ -2,14 +2,15 @@ import numpy as np
 from scipy.optimize import linear_sum_assignment
 import math
 import time
-N = 5000
-setA = [(3,2),(4,1),(8,5)]
-setB = [(1,2),(3,6),(1,5)]
+import csv
+N = 1000
+# setA = [(3,2),(4,1),(8,5)]
+# setB = [(1,2),(3,6),(1,5)]
 # setA = np.random.uniform(0, 10, (N, 2))
 # setB = np.random.uniform(0, 10, (N, 2))
 class hungarian_algorithm:
     
-    def __init__(self, setA, setB):
+    def __init__(self, setA=None, setB=None):
         self.setA = setA
         self.setB = setB
     
@@ -32,11 +33,29 @@ class hungarian_algorithm:
         return mimimum_distance, matching_pairs
 
 
+
+
+    def read_csv(filename):
+        points = []
+
+        with open(filename, newline='') as csvfile:
+            reader = csv.reader(csvfile)
+            for row in reader:
+                if len(row) == 2:
+                    points.append((float(row[0]), float(row[1])))
+
+        return points
+   
 start_time = time.time()
-hungarian =  hungarian_algorithm(setA,setB)
-cost_matrix = hungarian.cost_matrix()
+setAfilename = "/Users/guna/Education/Masters/2ndSemester/COT6405_DAA/daa_project/Dataset/setA_3.csv"
+setBfilename = "/Users/guna/Education/Masters/2ndSemester/COT6405_DAA/daa_project/Dataset/setB_3.csv"
+hungarian =  hungarian_algorithm(setAfilename,setBfilename)
+setA = hungarian.read_csv(setAfilename)
+setB = hungarian.read_csv(setBfilename)
+
+cost_matrix = hungarian.cost_matrix(setA)
 mimimum_distance, matching_pairs = hungarian.calDistance_MPairs(cost_matrix)
 print("Total Minimum distance:", mimimum_distance)
-print("Matching pairs:", matching_pairs)
+# print("Matching pairs:", matching_pairs)
 execution_time = time.time() - start_time
 print("Execution time is " + str(execution_time) + " seconds")

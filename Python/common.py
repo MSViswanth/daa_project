@@ -1,41 +1,30 @@
 import copy
 import math
+import csv
 
 class preprocess:
     
-    def __init__(self, setA, setB):
+    def __init__(self, setA=None, setB=None):
         self.setA = setA
         self.setB = setB
 
-    def cost_matrix(self):
-        cost_matrix=[[0 for i in range(len(self.setA))] for j in range(len(self.setB))]
-        cost_array = []
+    def distance_matrix(self):
+         """Generate distance matric from the input lists setA and setB"""
+        distance_matrix=[[0 for i in range(len(self.setA))] for j in range(len(self.setB))]
+        distance_array = []
         for i in range(len(self.setA)):
             for j in range(len(self.setB)):
-                cost_matrix[i][j] = math.dist(self.setA[i],self.setB[j])
-                cost_array.append([cost_matrix[i][j],i,j])
-        # Set the value of n.
-        n = len(cost_matrix)
-        return cost_array
+                distance_matrix[i][j] = math.dist(self.setA[i],self.setB[j])
+                distance_array.append([distance_matrix[i][j],i,j])
+        n = len(distance_matrix)
+        return distance_array
 
-    def sorted_array(self, cost_array):
-        # Create a new array with cost values and positions of each of the values
-        # [['cost value','measurement', 'track']] - format
-        # cost_array = []
-        # for i in range(0,n):
-        #     for j in range(0,n):
-        #         cost_array.append([cost_matrix[i][j],i,j])
-
-        # Sort the cost array in ascending order with respect to the first element in child lists.
-        #sorted_cost_array = cost_array.copy()
-        #cost_array.sort()
-        cost_array = self.merge_sort(cost_array)
-        #print()
-        return cost_array
+    def sorted_array(self, distance_array):
+        distance_array = self.merge_sort(distance_array)
+        return distance_array
     
     def merge(self, left, right):
         """Merge sort merging function."""
-
         left_index, right_index = 0, 0
         result = []
         while left_index < len(left) and right_index < len(right):
@@ -52,12 +41,22 @@ class preprocess:
 
     def merge_sort(self, array):
         """Merge sort algorithm implementation."""
-        if len(array) <= 1:  # base case
+        if len(array) <= 1: 
             return array
-
-        # divide array in half and merge sort recursively
         half = len(array) // 2
         left = self.merge_sort(array[:half])
         right = self.merge_sort(array[half:])
 
         return self.merge(left, right)
+    
+    def read_csv(self, filename):
+        """Read data from csv file"""
+        points = []
+
+        with open(filename, newline='') as csvfile:
+            reader = csv.reader(csvfile)
+            for row in reader:
+                if len(row) == 2:
+                    points.append((float(row[0]), float(row[1])))
+
+        return points
