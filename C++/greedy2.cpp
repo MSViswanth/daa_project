@@ -95,8 +95,8 @@ int main()
 {
     // std::vector<std::pair<double, double>> setA = {{3.0, 2.0}, {4.0, 1.0}, {8.0, 5.0}};
     // std::vector<std::pair<double, double>> setB = {{1.0, 2.0}, {3.0, 6.0}, {1.0, 5.0}};
-    std::string setAfilename = "../Dataset/setA_15000.csv";
-    std::string setBfilename = "../Dataset/setB_15000.csv";
+    std::string setAfilename = "../Dataset/setA_10000.csv";
+    std::string setBfilename = "../Dataset/setB_10000.csv";
     std::vector<std::pair<double, double>> setA = readCSV(setAfilename);
     std::vector<std::pair<double, double>> setB = readCSV(setBfilename);
     int N = setA.size();
@@ -125,13 +125,13 @@ int main()
     cout << "Time taken by Greedy Algorithm: "
          << duration.count() << " microseconds" << endl;
     std::cout << "Minimum Distance: " << result.first << std::endl;
-    // std::cout << "Matching pairs:" << std::endl;
-    // for (const auto &pair : result.second)
-    // {
-    //     std::cout << "(" << setA[pair.first].first << ", " << setA[pair.first].second << ") --> "
-    //               << "(" << setB[pair.second].first << ", " << setB[pair.second].second << ")" << std::endl;
-    // }
-    // std::cout << "Total matching points: " << result.second.size() << std::endl;
+    std::cout << "Matching pairs:" << std::endl;
+    for (const auto &pair : result.second)
+    {
+        std::cout << "(" << setA[pair.first].first << ", " << setA[pair.first].second << ") --> "
+                  << "(" << setB[pair.second].first << ", " << setB[pair.second].second << ") --> " << std::sqrt(std::pow(setA[pair.first].first - setB[pair.first].first, 2) + std::pow(setA[pair.second].second - setB[pair.second].second, 2)) << std::endl;
+    }
+    std::cout << "Total matching points: " << result.second.size() << std::endl;
 
     return 0;
 }
