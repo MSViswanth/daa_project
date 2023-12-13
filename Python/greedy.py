@@ -23,7 +23,7 @@ class Greedy_algorithm:
             i =i+1
         return minumum_distance
 
-#Input to the algorithm. Change the file path top desired dataset file path in dataset folder
+#Input to the algorithm. Change the file path to desired dataset file path in dataset folder
 setAfilename = "../Dataset/setA_10.csv"
 setBfilename = "../Dataset/setB_10.csv"
 
