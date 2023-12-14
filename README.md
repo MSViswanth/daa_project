@@ -21,11 +21,13 @@ We implemented below algorithms in pyhton and C++ to address the Euclidean Bichr
         ├── hungarian.cpp          # C++ implementation for Hungarian Algorithm
         ├── greedy.cpp             # C++ implementation for Greedy Algorithm
         ├── neighbourly.cpp        # C++ implementation for Neighbourly Algorithm
+        ├── avl_tree.h             # AVL tree implementation
     ├── Dataset                    # Contains different size of dataset for setA and SetB input ranging from 10 to 30000 records
     ├── Python
         ├── hungarian.py           # Pyhton implementation for Hungarian Algorithm
         ├── greedy.py              # Pyhton implementation for Greedy Algorithm
         ├── generateData.py        # Pyhton implementation to generate synthetic data points for set A and set B that as be fed as input to test implemented algorithms
+        ├── avl_tree.py             # AVL tree implementation
     └── README.md
 
 # Usage
