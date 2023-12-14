@@ -17,7 +17,7 @@ namespace HungarianAlgorithm
     /**
      * @brief Function to reduce the rows and columns. Find the minimum value in each row and subtract it from all the values in each row and Subtract the minimum value of each column from all the elements in their respective columns
      */
-    void row_column_reduction(std::vector<std::vector<double>> &matrix,
+    void row_column_reduction(std::vector<std::vector<double> > &matrix,
                               int &goto_step)
     {
         for (auto &row : matrix)
@@ -61,8 +61,8 @@ namespace HungarianAlgorithm
     /**
      * @brief Function to scan the distance matrix and update the matrix M with 1s in the positions where distance matrix has zero
      */
-    void coverzeros(std::vector<std::vector<double>> &matrix,
-                    std::vector<std::vector<double>> &M,
+    void coverzeros(std::vector<std::vector<double> > &matrix,
+                    std::vector<std::vector<double> > &M,
                     std::vector<int> &RowCover,
                     std::vector<int> &ColCover,
                     int &goto_step)
@@ -88,7 +88,7 @@ namespace HungarianAlgorithm
     /**
      * @brief Function to check if the number of rows and columns used to cover the zeros is equal to N. If it is equal then invoke function to find the pair points
      */
-    void validate_lines_coverzero(const std::vector<std::vector<double>> &M,
+    void validate_lines_coverzero(const std::vector<std::vector<double> > &M,
                                   std::vector<int> &ColCover,
                                   int &goto_step)
     {
@@ -118,7 +118,7 @@ namespace HungarianAlgorithm
      */
     void find_a_zero(int &row,
                      int &col,
-                     const std::vector<std::vector<double>> &matrix,
+                     const std::vector<std::vector<double> > &matrix,
                      const std::vector<int> &RowCover,
                      const std::vector<int> &ColCover)
     {
@@ -154,7 +154,7 @@ namespace HungarianAlgorithm
      * @brief Function to star zeros in each row
      */
     bool star_in_row(int row,
-                     const std::vector<std::vector<double>> &M)
+                     const std::vector<std::vector<double> > &M)
     {
         bool tmp = false;
         for (unsigned c = 0; c < M.size(); c++)
@@ -168,7 +168,7 @@ namespace HungarianAlgorithm
      */
     void find_star_in_row(int row,
                           int &col,
-                          const std::vector<std::vector<double>> &M)
+                          const std::vector<std::vector<double> > &M)
     {
         col = -1;
         for (unsigned c = 0; c < M.size(); c++)
@@ -179,8 +179,8 @@ namespace HungarianAlgorithm
     /**
      * @brief Function to find the zero and identify cover_zero_path to cover each zero
      */
-    void find_cover_zero_path(std::vector<std::vector<double>> &matrix,
-                              std::vector<std::vector<double>> &M,
+    void find_cover_zero_path(std::vector<std::vector<double> > &matrix,
+                              std::vector<std::vector<double> > &M,
                               std::vector<int> &RowCover,
                               std::vector<int> &ColCover,
                               int &cover_zero_path_row_0,
@@ -225,7 +225,7 @@ namespace HungarianAlgorithm
      */
     void find_star_in_col(int c,
                           int &r,
-                          const std::vector<std::vector<double>> &M)
+                          const std::vector<std::vector<double> > &M)
     {
         r = -1;
         for (unsigned i = 0; i < M.size(); i++)
@@ -238,7 +238,7 @@ namespace HungarianAlgorithm
      */
     void find_prime_in_row(int r,
                            int &c,
-                           const std::vector<std::vector<double>> &M)
+                           const std::vector<std::vector<double> > &M)
     {
         for (unsigned j = 0; j < M.size(); j++)
             if (M[r][j] == 2)
@@ -249,9 +249,9 @@ namespace HungarianAlgorithm
      * @brief Function to agument cover_zero_path that covers zeros
      */
 
-    void augment_cover_zero_path(std::vector<std::vector<int>> &cover_zero_path,
+    void augment_cover_zero_path(std::vector<std::vector<int> > &cover_zero_path,
                                  int cover_zero_path_count,
-                                 std::vector<std::vector<double>> &M)
+                                 std::vector<std::vector<double> > &M)
     {
         for (int p = 0; p < cover_zero_path_count; p++)
             if (M[cover_zero_path[p][0]][cover_zero_path[p][1]] == 1)
@@ -263,7 +263,7 @@ namespace HungarianAlgorithm
     /**
      * @brief Function to clear the prime
      */
-    void clear_primes(std::vector<std::vector<double>> &M)
+    void clear_primes(std::vector<std::vector<double> > &M)
     {
         for (auto &row : M)
             for (auto &val : row)
@@ -274,10 +274,10 @@ namespace HungarianAlgorithm
     /**
      * @brief Function to find star and prime and construct cover_zero_path
      */
-    void construct_cover_zero_path(std::vector<std::vector<int>> &cover_zero_path,
+    void construct_cover_zero_path(std::vector<std::vector<int> > &cover_zero_path,
                                    int cover_zero_path_row_0,
                                    int cover_zero_path_col_0,
-                                   std::vector<std::vector<double>> &M,
+                                   std::vector<std::vector<double> > &M,
                                    std::vector<int> &RowCover,
                                    std::vector<int> &ColCover,
                                    int &goto_step)
@@ -325,7 +325,7 @@ namespace HungarianAlgorithm
      * @brief Function to identify minimum value in uncovered rows and columns
      */
     void find_min_row_value(double &min_col_value,
-                            const std::vector<std::vector<double>> &matrix,
+                            const std::vector<std::vector<double> > &matrix,
                             const std::vector<int> &RowCover,
                             const std::vector<int> &ColCover)
     {
@@ -339,7 +339,7 @@ namespace HungarianAlgorithm
     /**
      * @brief Function to adjust the matrix by subtracting the minimum value from uncovered rows and columns from each uncovered rows and add it to covered columns
      */
-    void adjust_matrix(std::vector<std::vector<double>> &matrix,
+    void adjust_matrix(std::vector<std::vector<double> > &matrix,
                        const std::vector<int> &RowCover,
                        const std::vector<int> &ColCover,
                        int &goto_step)
@@ -360,9 +360,9 @@ namespace HungarianAlgorithm
         goto_step = 4;
     }
 
-    double hungarian(std::vector<std::vector<double>> &original)
+    double hungarian(std::vector<std::vector<double> > &original)
     {
-        std::vector<std::vector<double>> matrix(original.size(),
+        std::vector<std::vector<double> > matrix(original.size(),
                                                 std::vector<double>(original.begin()->size()));
 
         auto it = original.begin();
@@ -374,14 +374,14 @@ namespace HungarianAlgorithm
 
         std::size_t sz = matrix.size();
 
-        std::vector<std::vector<double>> M(sz, std::vector<double>(sz, 0));
+        std::vector<std::vector<double> > M(sz, std::vector<double>(sz, 0));
 
         std::vector<int> RowCover(sz, 0);
         std::vector<int> ColCover(sz, 0);
 
         int cover_zero_path_row_0, cover_zero_path_col_0;
 
-        std::vector<std::vector<int>> cover_zero_path(sz + 1, std::vector<int>(2, 0));
+        std::vector<std::vector<int> > cover_zero_path(sz + 1, std::vector<int>(2, 0));
 
         bool optimal_solution_found = false;
         int goto_step = 1;
@@ -443,10 +443,10 @@ namespace HungarianAlgorithm
     /**
      * @brief Function to read data from csv file
      */
-    std::vector<std::pair<double, double>> readCSV(const std::string &filename)
+    std::vector<std::pair<double, double> > readCSV(const std::string &filename)
     {
         std::ifstream file(filename);
-        std::vector<std::pair<double, double>> points;
+        std::vector<std::pair<double, double> > points;
 
         if (file.is_open())
         {
@@ -485,15 +485,15 @@ int main()
      */
     std::string setAfilename = "../Dataset/setA_10.csv";
     std::string setBfilename = "../Dataset/setB_10.csv";
-    std::vector<std::pair<double, double>> setA = readCSV(setAfilename);
-    std::vector<std::pair<double, double>> setB = readCSV(setBfilename);
+    std::vector<std::pair<double, double> > setA = readCSV(setAfilename);
+    std::vector<std::pair<double, double> > setB = readCSV(setBfilename);
 
     auto start = std::chrono::steady_clock::now();
 
     /**
      * @brief Generate distance matrix using euclidean distance
      */
-    std::vector<std::vector<double>> distanceMatrix(setA.size(), std::vector<double>(setB.size(), 0.0));
+    std::vector<std::vector<double> > distanceMatrix(setA.size(), std::vector<double>(setB.size(), 0.0));
     for (size_t i = 0; i < setA.size(); ++i)
     {
         for (size_t j = 0; j < setB.size(); ++j)
