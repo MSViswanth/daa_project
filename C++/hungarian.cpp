@@ -483,8 +483,8 @@ int main()
     /**
      * @brief Input to the algorithm. Change the file cover_zero_path to desired dataset file cover_zero_path in dataset folder
      */
-    std::string setAfilename = "../Dataset/setA_10.csv";
-    std::string setBfilename = "../Dataset/setB_10.csv";
+    std::string setAfilename = "../Dataset/setA/setA_10.csv";
+    std::string setBfilename = "../Dataset/setB/setB_10.csv";
     std::vector<std::pair<double, double> > setA = readCSV(setAfilename);
     std::vector<std::pair<double, double> > setB = readCSV(setBfilename);
 

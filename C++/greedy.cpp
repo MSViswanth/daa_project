@@ -80,8 +80,8 @@ std::vector<std::pair<double, double>> readCSV(const std::string &filename)
 int main()
 {
 
-    std::string setAfilename = "../Dataset/setA_10.csv";
-    std::string setBfilename = "../Dataset/setB_10.csv";
+    std::string setAfilename = "../Dataset/setA/setA_10.csv";
+    std::string setBfilename = "../Dataset/setB/setB_10.csv";
     std::vector<std::pair<double, double>> setA = readCSV(setAfilename);
     std::vector<std::pair<double, double>> setB = readCSV(setBfilename);
     int N = setA.size();

@@ -24,8 +24,8 @@ class Greedy_algorithm:
         return minumum_distance
 
 #Input to the algorithm. Change the file path to desired dataset file path in dataset folder
-setAfilename = "../Dataset/setA_10.csv"
-setBfilename = "../Dataset/setB_10.csv"
+setAfilename = "../Dataset/setA/setA_10.csv"
+setBfilename = "../Dataset/setB/setB_10.csv"
 
 #Read the data from csv file and store it in setA and setB respectively
 readdata = preprocess()

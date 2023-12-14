@@ -9,7 +9,7 @@ class preprocess:
         self.setB = setB
 
     def distance_matrix(self):
-         """Generate distance matric from the input lists setA and setB"""
+        """Generate distance matric from the input lists setA and setB"""
         distance_matrix=[[0 for i in range(len(self.setA))] for j in range(len(self.setB))]
         distance_array = []
         for i in range(len(self.setA)):
@@ -22,7 +22,7 @@ class preprocess:
     def sorted_array(self, distance_array):
         distance_array = self.merge_sort(distance_array)
         return distance_array
-    
+
     def merge(self, left, right):
         """Merge sort merging function."""
         left_index, right_index = 0, 0
@@ -48,7 +48,7 @@ class preprocess:
         right = self.merge_sort(array[half:])
 
         return self.merge(left, right)
-    
+
     def read_csv(self, filename):
         """Read data from csv file"""
         points = []
