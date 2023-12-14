@@ -1,7 +1,7 @@
 # COT6405 - Design and Analysis of Algorithms - Term Project
 
 # Overview
-We implemented below algorithms in pyhton and C++ to address the Euclidean Bichromatic Matching problem. 
+We implemented below algorithms in python and C++ to address the Euclidean Bichromatic Matching problem. 
 
 | Algorithm | Time Complexity | Space Complexity |
 | --- | --- | --- |
@@ -11,11 +11,11 @@ We implemented below algorithms in pyhton and C++ to address the Euclidean Bichr
 
 # Dependencies
 
-- GCC Compiler to run C++ programs
+- Clang compiler to run C++ programs
 - Latest version of Python &ge; 3.7 to run python programs
 
 # Folder Structure
-
+'''bash
  DAA_PROJECT
     ├── C++
         ├── hungarian.cpp          # C++ implementation for Hungarian Algorithm
@@ -29,7 +29,7 @@ We implemented below algorithms in pyhton and C++ to address the Euclidean Bichr
         ├── generateData.py        # Pyhton implementation to generate synthetic data points for set A and set B that as be fed as input to test implemented algorithms
         ├── avl_tree.py             # AVL tree implementation
     └── README.md
-
+'''
 # Usage
 
 1. Download the DAA_Project folder to your local machine
@@ -47,4 +47,5 @@ We implemented below algorithms in pyhton and C++ to address the Euclidean Bichr
         - Save the file
         - Run the python file using the command python MyProgram.py   
 
-Note: We benchmarked the hungarian implementation in C++ with 2000 record(i.e N = 2000). Greedy and neighbourly C++ implementation was benchmarked till 15000 records(i.e N = 15000) 
+>**Note** 
+> We benchmarked the hungarian implementation in C++ with 2000 record(i.e N = 2000). Greedy and neighbourly C++ implementation was benchmarked till 15000 records(i.e N = 15000) 
