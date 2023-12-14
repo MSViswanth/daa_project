@@ -40,7 +40,7 @@ We implemented the below algorithms in Python and C++ to address the Euclidean B
 2. Install the dependencies.
 3. To run the program follow the below steps:
 
-	  a. For C++ programs
+   a. For C++ programs
 
         i. Open the respective C++ file in any IDE or text editor.
         ii. Modify the input file path defined in the setAfilename and setBfilename variable in the 'main()' function. to the path of the desired input size from the dataset. You can also generate your own dataset using 'generateData.py' in the Python folder by specifying the input size N.
