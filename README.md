@@ -1,4 +1,4 @@
-# DAA Term Project - Euclidean Bichromatic Matching
+# Euclidean Bichromatic Matching
 
 # Implementations of various algorithms for Euclidean Bichromatic Matching.
 
