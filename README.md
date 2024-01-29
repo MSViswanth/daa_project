@@ -8,3 +8,4 @@
 | Hungarian | $O(n^3)$ |
 | Greedy1 | $O(n^4)$ |
 | Greedy2 | $O(n^2 \log n)$|
+| Neighborly | $O(n^2 \log n)$|
